@@ -1,0 +1,4 @@
+name: ScenarioManager
+main: me.calebbassham.scenariomanager.ScenarioManagerPlugin
+version: 1.0
+author: Caleb Bassham
