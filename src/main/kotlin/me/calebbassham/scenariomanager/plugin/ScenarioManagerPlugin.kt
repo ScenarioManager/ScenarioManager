@@ -1,4 +1,4 @@
-package me.calebbassham.scenariomanager
+package me.calebbassham.scenariomanager.plugin
 
 import org.bukkit.plugin.java.JavaPlugin
 
