@@ -40,21 +40,16 @@ abstract class Scenario(internal val plugin: JavaPlugin) {
         }
 
     /**
-     * @param player The [Player] to apply the [PotionEffects][PotionEffect] to.
-     * @return An [Array] of [PotionEffect] to apply to the given [Player] at the start of the game.
-     */
-    open fun getStartingPotionEffects(player: Player): Array<PotionEffect>? = null
-
-    /**
-     * @param player The [Player] to give the [ItemStacks][ItemStack] to.
-     * @return An [Array] of [ItemStack]
-     */
-    open fun getStartingItems(player: Player): Array<ItemStack>? = null
-
-    /**
      * Called when the game is started.
      */
     open fun onGameStart() {}
+
+    /**
+     * This method should be used to handle doing things to players when the game starts.
+     * Such as applying potion effects, giving items, setting max health, etc.
+     * @param player The player that is starting.
+     */
+    open fun onPlayerStart(player: Player) {}
 
     /**
      * Called when the game is stopped.

@@ -1,6 +1,12 @@
 package me.calebbassham.scenariomanager.api
 
+import me.calebbassham.scenariomanager.api.skript.event.GameStartEvent
+import me.calebbassham.scenariomanager.api.skript.event.GameStopEvent
+import me.calebbassham.scenariomanager.api.skript.event.PlayerStartEvent
+import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
+import me.calebbassham.scenariomanager.plugin.log
 import org.bukkit.Bukkit
+import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 
 class ScenarioManager {
@@ -11,13 +17,13 @@ class ScenarioManager {
      * @return All [scenarios][Scenario] that are registered to this scenario manager.
      */
     val registeredScenarios: Array<Scenario>
-            get() = scenarios.values.toTypedArray()
+        get() = scenarios.values.toTypedArray()
 
     /**
      * All [scenarios][Scenario] that are currently enabled.
      */
     val enabledScenarios: Array<Scenario>
-            get() = scenarios.values.filter { it.isEnabled }.toTypedArray()
+        get() = scenarios.values.filter { it.isEnabled }.toTypedArray()
 
     /**
      * @param scenario The [Scenario] to register to this [ScenarioManager]
@@ -60,12 +66,23 @@ class ScenarioManager {
     /**
      * Will trigger the [Scenario.onGameStart] method for all enabled scenarios
      * and register their event handlers.
+     *
+     * @param players The players that are playing the game. [Scenario.onPlayerStart] will be called with all of the players.
      */
-    fun onGameStart() {
-        enabledScenarios.forEach {
-            it.onGameStart()
+    fun onGameStart(players: Array<Player>) {
+        log.info("started with ${players.joinToString(", ")}")
 
-            if (it is Listener) Bukkit.getPluginManager().registerEvents(it, it.plugin)
+        enabledScenarios.forEach { scenario ->
+            scenario.onGameStart()
+            players.forEach { player ->
+                scenario.onPlayerStart(player)
+                Bukkit.getPluginManager().callEvent(PlayerStartEvent(player))
+            }
+
+            if (scenario is Listener) Bukkit.getPluginManager().registerEvents(scenario, scenario.plugin)
+            if (ScenarioManagerPlugin.instance.skriptAddon != null) {
+                Bukkit.getPluginManager().callEvent(GameStartEvent())
+            }
         }
     }
 
@@ -74,5 +91,15 @@ class ScenarioManager {
      */
     fun onGameStop() {
         enabledScenarios.forEach { it.onGameStop() }
+        if (ScenarioManagerPlugin.instance.skriptAddon != null) {
+            Bukkit.getPluginManager().callEvent(GameStopEvent())
+        }
+    }
+
+    fun onPlayerStart(player: Player) {
+        enabledScenarios.forEach { scenario ->
+            scenario.onPlayerStart(player)
+        }
+        Bukkit.getPluginManager().callEvent(PlayerStartEvent(player))
     }
 }

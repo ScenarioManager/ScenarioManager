@@ -3,9 +3,11 @@ buildscript {
 
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.0"
     }
 }
 
@@ -13,17 +15,33 @@ group 'me.calebbassham'
 version '1.0.0'
 
 apply plugin: 'kotlin'
+apply plugin: "com.github.johnrengelman.shadow"
 
 repositories {
     mavenCentral()
+    maven { url = "https://dl.bintray.com/darkpaladin/libs-release" }
     maven { url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
     maven { url = "https://hub.spigotmc.org/nexus/content/groups/public/" }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compileOnly ("ch.njol:skript:2.2-dev37c")
     compileOnly "org.spigotmc:spigot-api:1.8-R0.1-SNAPSHOT"
 }
+
+shadowJar {
+    relocate 'kotlin', 'com.oblivionuhc.scenariomanager.depend.kotlinstdlib'
+    archiveName "ScenarioManager.jar"
+}
+
+jar {
+    from configurations.compile.collect { zipTree it }
+    archiveName = "ScenarioManager.jar"
+}
+
+
+build.dependsOn shadowJar
 
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
