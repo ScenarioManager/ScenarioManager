@@ -14,7 +14,7 @@ class CondScenarioRegistered : Condition() {
     @Suppress("UNCHECKED_CAST")
     override fun init(exprs: Array<out Expression<*>>, matchedPattern: Int, p2: Kleenean?, p3: SkriptParser.ParseResult?): Boolean {
         name = exprs[0] as Expression<String>
-        isNegated = matchedPattern == 0
+        isNegated = matchedPattern == 1
         return true
     }
 
