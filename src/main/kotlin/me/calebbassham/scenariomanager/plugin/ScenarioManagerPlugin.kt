@@ -30,7 +30,10 @@ class ScenarioManagerPlugin : JavaPlugin() {
 
     companion object {
         internal lateinit var instance: ScenarioManagerPlugin
-        var scenarioManager = ScenarioManager()
+
+        @JvmStatic
+        var scenarioManager: ScenarioManager? = null
+            private set
     }
 
     internal var skriptAddon: SkriptAddon? = null
@@ -41,7 +44,7 @@ class ScenarioManagerPlugin : JavaPlugin() {
             log = this.logger
         }
 
-        scenarioManager = ScenarioManager()
+        scenarioManager = ScenarioManager(this)
 
         instance = this
 
@@ -52,20 +55,20 @@ class ScenarioManagerPlugin : JavaPlugin() {
         PaperCommandManager(this).apply {
             commandContexts.registerContext(Scenario::class.java, {
                 val scenName = it.popFirstArg().replace("_", " ")
-                return@registerContext scenarioManager.getScenario(scenName)
+                return@registerContext scenarioManager?.getScenario(scenName)
                         ?: throw InvalidCommandArgument(String.format(Messages.NOT_A_SCENARIO, scenName), false)
             })
 
             commandCompletions.registerCompletion("scenarios", {
-                scenarioManager.registeredScenarios.map { it.name.replace(" ", "_") }
+                scenarioManager?.registeredScenarios?.map { it.name.replace(" ", "_") }
             })
 
             commandCompletions.registerCompletion("enabledScenarios", {
-                scenarioManager.enabledScenarios.map { it.name.replace(" ", "_") }
+                scenarioManager?.enabledScenarios?.map { it.name.replace(" ", "_") }
             })
 
             commandCompletions.registerCompletion("disabledScenarios", {
-                scenarioManager.registeredScenarios.filterNot { it.isEnabled }.map { it.name.replace(" ", "_") }
+                scenarioManager?.registeredScenarios?.filterNot { it.isEnabled }?.map { it.name.replace(" ", "_") }
             })
 
             registerCommand(ScenarioManagerCmd())
@@ -88,11 +91,14 @@ class ScenarioManagerPlugin : JavaPlugin() {
             override fun get(e: PlayerStartEvent) = e.player
         }, 0)
 
+        Skript.registerEvent("scenario event", EvtSkriptScenarioEvent::class.java, SkriptScenarioEventTriggerEvent::class.java, "scenario event %string%")
+
         Skript.registerEffect(EffScenarioEnable::class.java, "enable %scenarios%", "disable %scenarios%")
         Skript.registerEffect(EffRegisterScenario::class.java, "register scenario with name %string% and description %string%")
         Skript.registerEffect(EffTriggerGameStartEvent::class.java, "trigger game start event with %players%")
         Skript.registerEffect(EffTriggerGameStopEvent::class.java, "trigger game stop event")
         Skript.registerEffect(EffTriggerPlayerStartEvent::class.java, "trigger player start event with %player%")
+        Skript.registerEffect(EffScheduleScenarioEvent::class.java, "schedule scenario event [with name ]%string% to run in %timespan%[ and hide]")
 
         Skript.registerExpression(ExprScenario::class.java, Scenario::class.java, ExpressionType.COMBINED, "[the] scenario [with name ]%string%")
         Skript.registerExpression(ExprScenarioDescription::class.java, String::class.java, ExpressionType.COMBINED, "[the] description of %scenario%", "%scenario%'s description")

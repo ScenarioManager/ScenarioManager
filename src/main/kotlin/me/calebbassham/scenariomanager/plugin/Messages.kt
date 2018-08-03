@@ -15,6 +15,9 @@ internal object Messages {
     val SCENARIO_ENABLED = "$PREFIX $HIGHLIGHT%s ${MAIN}has been &aenabled."
     val SCENARIO_DISABLED = "$PREFIX $HIGHLIGHT%s ${MAIN}has been &cdisabled."
     val DESCRIBE_SCENARIO = "$PREFIX $HIGHLIGHT%s: $MAIN%s"
+    val TIMERS_UNSUPPORTED = "This command is unsupported by the current scenario event scheduler."
+    val TIMER = "$PREFIX $HIGHLIGHT%s: &a%s"
+    val NO_TIMERS = "$PREFIX There are no timers running."
 }
 
 internal fun CommandSender.sendMessage(message: String, vararg replacements: Any) {

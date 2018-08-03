@@ -14,7 +14,7 @@ class EffTriggerGameStopEvent : Effect() {
     override fun init(p0: Array<out Expression<*>>?, p1: Int, p2: Kleenean?, p3: SkriptParser.ParseResult?) = true
 
     override fun execute(p0: Event?) {
-        ScenarioManagerPlugin.scenarioManager.onGameStop()
+        ScenarioManagerPlugin.scenarioManager?.onGameStop()
     }
 
     override fun toString(p0: Event?, p1: Boolean) = "Trigger Game Stop Event"

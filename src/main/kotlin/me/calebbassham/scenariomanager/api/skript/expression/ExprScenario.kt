@@ -17,7 +17,7 @@ class ExprScenario : PropertyExpression<String, Scenario>() {
     }
 
     override fun get(e: Event, source: Array<out String>): Array<Scenario> {
-        return get(source, fun(name: String) = ScenarioManagerPlugin.scenarioManager.getScenario(name))
+        return get(source, fun(name: String) = ScenarioManagerPlugin.scenarioManager?.getScenario(name))
     }
 
     override fun toString(e: Event?, debug: Boolean) = "The scenario ${expr.toString(e, debug)}"

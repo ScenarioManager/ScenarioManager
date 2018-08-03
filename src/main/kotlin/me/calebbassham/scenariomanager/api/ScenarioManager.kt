@@ -8,8 +8,11 @@ import me.calebbassham.scenariomanager.plugin.log
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
+import org.bukkit.plugin.java.JavaPlugin
 
-class ScenarioManager {
+class ScenarioManager(plugin: JavaPlugin) {
+
+    var eventScheduler: ScenarioEventScheduler = DefaultScenarioEventScheduler(plugin)
 
     private val scenarios = HashMap<String, Scenario>()
 
@@ -65,12 +68,14 @@ class ScenarioManager {
 
     /**
      * Will trigger the [Scenario.onGameStart] method for all enabled scenarios
-     * and register their event handlers.
+     * and register their event handlers. This should also be where you schedule [ScenarioEvent].
      *
      * @param players The players that are playing the game. [Scenario.onPlayerStart] will be called with all of the players.
      */
     fun onGameStart(players: Array<Player>) {
         log.info("started with ${players.joinToString(", ")}")
+
+        (eventScheduler as? DefaultScenarioEventScheduler)?.startTimer()
 
         enabledScenarios.forEach { scenario ->
             scenario.onGameStart()
@@ -91,6 +96,9 @@ class ScenarioManager {
      */
     fun onGameStop() {
         enabledScenarios.forEach { it.onGameStop() }
+
+        (eventScheduler as? DefaultScenarioEventScheduler)?.stopTimer()
+
         if (ScenarioManagerPlugin.instance.skriptAddon != null) {
             Bukkit.getPluginManager().callEvent(GameStopEvent())
         }

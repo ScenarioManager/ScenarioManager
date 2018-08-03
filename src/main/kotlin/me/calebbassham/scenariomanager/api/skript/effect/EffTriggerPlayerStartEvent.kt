@@ -20,7 +20,7 @@ class EffTriggerPlayerStartEvent : Effect() {
 
     override fun execute(e: Event) {
         val player = player?.getSingle(e) ?: return
-        ScenarioManagerPlugin.scenarioManager.onPlayerStart(player)
+        ScenarioManagerPlugin.scenarioManager?.onPlayerStart(player)
     }
 
     override fun toString(e: Event?, debug: Boolean) = "Trigger player start event: ${player?.toString(e, debug)}"

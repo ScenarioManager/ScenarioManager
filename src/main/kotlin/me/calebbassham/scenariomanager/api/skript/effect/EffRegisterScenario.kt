@@ -33,7 +33,7 @@ class EffRegisterScenario : Effect() {
         }
 
         try {
-            ScenarioManagerPlugin.scenarioManager.registerScenario(scenario)
+            ScenarioManagerPlugin.scenarioManager?.registerScenario(scenario)
         } catch (e: ScenarioAlreadyRegistered) {
             log.info("Tried to register ${scenario.name} but it is already registered.")
         } catch (e: ScenarioNameConflict) {
