@@ -27,8 +27,7 @@ class EffRegisterScenario : Effect() {
         val name = this.name?.getSingle(e) ?: return
         val description = this.description?.getSingle(e) ?: return
 
-        val scenario = object : Scenario(ScenarioManagerPlugin.instance) {
-            override val name = name
+        val scenario = object : Scenario(name, ScenarioManagerPlugin.instance) {
             override val description = description
         }
 
