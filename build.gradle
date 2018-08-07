@@ -12,7 +12,7 @@ buildscript {
 }
 
 group = 'me.calebbassham'
-version  = '0.1.3'
+version  = '0.2.0gaa'
 
 apply plugin: 'maven'
 apply plugin: 'kotlin'
