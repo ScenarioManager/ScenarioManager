@@ -12,15 +12,11 @@ import org.bukkit.potion.PotionEffect
  * If a scenario implements [Listener], the event handlers within the
  * scenario will be registered when a game begins if the scenario is enabled
  * and unregistered when the game ends or on disable.
+ * @param name The name of the scenario.
  * @param plugin The [plugin][JavaPlugin] that this scenario is instantiated from.
  * @constructor Instantiates a new scenario.
  */
-abstract class Scenario(internal val plugin: JavaPlugin) {
-
-    /**
-     * The name of the scenario.
-     */
-    abstract val name: String
+abstract class Scenario(val name: String, internal val plugin: JavaPlugin) {
 
     /**
      * The description of the scenario.

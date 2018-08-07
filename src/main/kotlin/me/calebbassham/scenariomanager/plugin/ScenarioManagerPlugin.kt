@@ -2,6 +2,7 @@ package me.calebbassham.scenariomanager.plugin
 
 import ch.njol.skript.Skript
 import ch.njol.skript.SkriptAddon
+import ch.njol.skript.command.Commands.registerCommand
 import ch.njol.skript.lang.ExpressionType
 import ch.njol.skript.registrations.Classes
 import ch.njol.skript.registrations.EventValues
