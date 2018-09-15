@@ -1,8 +1,16 @@
 @file:JvmName("ScenarioManagerUtils")
 package me.calebbassham.scenariomanager
 
+import org.bukkit.Location
+import org.bukkit.inventory.ItemStack
+import org.bukkit.util.Vector
+
 object ScenarioManagerUtils {
 
+    /**
+     * Format ticks to a human readable form.
+     * Examples: 600 ticks = 30s    1200 ticks = 1m 1220    ticks = 1m1s
+     */
     @JvmStatic
     fun formatTicks(ticks: Long): String {
         var t = ticks
@@ -35,4 +43,20 @@ object ScenarioManagerUtils {
 
         return sb.toString()
     }
+
+    /**
+     * A util method to drop items at a location without them flying.
+     */
+    @JvmStatic
+    fun dropItemstack(itemStack: ItemStack, location: Location) {
+        location.world.dropItem(location, itemStack).apply {
+            location.x = location.blockX + 0.5
+            location.z = location.blockZ + 0.5
+            location.y = location.blockY + 0.5
+
+            velocity = Vector(0, 0, 0)
+        }
+    }
+
+
 }
