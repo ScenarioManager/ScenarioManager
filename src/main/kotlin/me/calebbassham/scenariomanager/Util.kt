@@ -49,11 +49,10 @@ object ScenarioManagerUtils {
      */
     @JvmStatic
     fun dropItemstack(itemStack: ItemStack, location: Location) {
-        location.world.dropItem(location, itemStack).apply {
-            location.x = location.blockX + 0.5
-            location.z = location.blockZ + 0.5
-            location.y = location.blockY + 0.5
 
+        val dropAt = Location(location.world, location.blockX + 0.5, location.blockY + 0.5, location.blockZ + 0.5)
+
+        location.world.dropItem(dropAt, itemStack).apply {
             velocity = Vector(0, 0, 0)
         }
     }
