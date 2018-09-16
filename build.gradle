@@ -14,7 +14,7 @@ buildscript {
 }
 
 group = 'me.calebbassham'
-version = '0.2.6'
+version = '0.2.7'
 
 apply plugin: 'kotlin'
 apply plugin: 'maven-publish'
@@ -40,29 +40,30 @@ jar {
     archiveName = "${baseName}.${extension}"
 }
 
-publishing {
-    publications {
-        scenarioManager(MavenPublication) {
-            from components.java
+if (tasks["publish"] != null) {
+    publishing {
+        publications {
+            scenarioManager(MavenPublication) {
+                from components.java
+            }
         }
-    }
 
-    repositories {
-        maven {
-            url = "s3://caleb-maven/"
 
-            credentials(AwsCredentials) {
-                AWSCredentials awsCredentials = new ProfileCredentialsProvider("caleb").credentials
 
-                accessKey = awsCredentials.AWSAccessKeyId
-                secretKey = awsCredentials.AWSSecretKey
+        repositories {
+            maven {
+                url = "s3://caleb-maven/"
+
+                credentials(AwsCredentials) {
+                    AWSCredentials awsCredentials = new ProfileCredentialsProvider("caleb").credentials
+
+                    accessKey = awsCredentials.AWSAccessKeyId
+                    secretKey = awsCredentials.AWSSecretKey
+                }
             }
         }
     }
 }
-
-build.dependsOn shadowJar
-publish.dependsOn shadowJar
 
 compileKotlin {
     kotlinOptions {
