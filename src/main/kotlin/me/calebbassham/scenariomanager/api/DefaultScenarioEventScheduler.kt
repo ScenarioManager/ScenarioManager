@@ -15,7 +15,6 @@ internal class DefaultScenarioEventScheduler(private val plugin: JavaPlugin) : S
     private inner class Timer : BukkitRunnable() {
 
         override fun run() {
-
             for ((event, triggerTicks) in events) {
                 if (triggerTicks <= 0) {
                     events.remove(event)
@@ -23,6 +22,8 @@ internal class DefaultScenarioEventScheduler(private val plugin: JavaPlugin) : S
                 } else{
                     events[event] = triggerTicks - 1
                 }
+
+                event.onTick(triggerTicks)
             }
         }
 
