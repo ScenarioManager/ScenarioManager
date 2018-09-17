@@ -6,6 +6,7 @@ import me.calebbassham.scenariomanager.api.skript.event.PlayerStartEvent
 import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
 import me.calebbassham.scenariomanager.plugin.log
 import org.bukkit.Bukkit
+import org.bukkit.World
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
@@ -110,4 +111,36 @@ class ScenarioManager(plugin: JavaPlugin) {
         }
         Bukkit.getPluginManager().callEvent(PlayerStartEvent(player))
     }
+
+    /**
+     * All players that are alive in the game.
+     * Used by scenarios to know what players to
+     * give items, effects, etc... to.
+     */
+    var gamePlayers: () -> List<Player> = fun() = Bukkit.getOnlinePlayers().toList()
+
+    /**
+     * Is a player playing in the game and alive?
+     * @see gamePlayers
+     */
+    var isGamePlayer: (player: Player) -> Boolean = fun(player: Player) = gamePlayers().contains(player)
+
+    /**
+     * All of the worlds that are used for the game.
+     * Used by scenarios to know what worlds to not
+     * put time bombs in and such.
+     */
+    var gameWorlds: () -> List<World> = fun() = Bukkit.getWorlds()
+
+    /**
+     * Is the world used in the game?
+     * @see gameWorlds
+     */
+    var isGameWorld: (world: World) -> Boolean = fun(world: World) = gameWorlds().contains(world)
+
+    /**
+     * Used by skript scenarios to know when to not
+     * react to events.
+     */
+    var isGameRunning: () -> Boolean = fun() = true
 }

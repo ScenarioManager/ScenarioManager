@@ -2,7 +2,6 @@ package me.calebbassham.scenariomanager.plugin
 
 import ch.njol.skript.Skript
 import ch.njol.skript.SkriptAddon
-import ch.njol.skript.command.Commands.registerCommand
 import ch.njol.skript.lang.ExpressionType
 import ch.njol.skript.registrations.Classes
 import ch.njol.skript.registrations.EventValues
@@ -11,6 +10,7 @@ import co.aikar.commands.InvalidCommandArgument
 import co.aikar.commands.PaperCommandManager
 import me.calebbassham.scenariomanager.api.Scenario
 import me.calebbassham.scenariomanager.api.ScenarioManager
+import me.calebbassham.scenariomanager.api.scenarioManager
 import me.calebbassham.scenariomanager.api.skript.condition.CondScenario
 import me.calebbassham.scenariomanager.api.skript.condition.CondScenarioRegistered
 import me.calebbassham.scenariomanager.api.skript.effect.*
@@ -31,10 +31,6 @@ class ScenarioManagerPlugin : JavaPlugin() {
 
     companion object {
         internal lateinit var instance: ScenarioManagerPlugin
-
-        @JvmStatic
-        var scenarioManager: ScenarioManager? = null
-            private set
     }
 
     internal var skriptAddon: SkriptAddon? = null

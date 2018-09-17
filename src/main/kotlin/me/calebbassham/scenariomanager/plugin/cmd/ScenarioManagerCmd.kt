@@ -8,8 +8,8 @@ import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Subcommand
 import me.calebbassham.scenariomanager.ScenarioManagerUtils
 import me.calebbassham.scenariomanager.api.Scenario
+import me.calebbassham.scenariomanager.api.scenarioManager
 import me.calebbassham.scenariomanager.plugin.Messages
-import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
 import me.calebbassham.scenariomanager.plugin.sendMessage
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
@@ -20,8 +20,8 @@ class ScenarioManagerCmd : BaseCommand() {
     @Subcommand("list")
     @Default
     fun list(sender: CommandSender) {
-        val enabled = ScenarioManagerPlugin.scenarioManager?.enabledScenarios?.joinToString(", ") { it.name } ?: return
-        val disabled = ScenarioManagerPlugin.scenarioManager?.registeredScenarios?.filterNot { it.isEnabled }?.joinToString(", ") { it.name }
+        val enabled = scenarioManager?.enabledScenarios?.joinToString(", ") { it.name } ?: return
+        val disabled = scenarioManager?.registeredScenarios?.filterNot { it.isEnabled }?.joinToString(", ") { it.name }
                 ?: return
 
         if (!enabled.isEmpty()) sender.sendMessage(Messages.ENABLED_SCENARIOS, enabled)
@@ -50,7 +50,7 @@ class ScenarioManagerCmd : BaseCommand() {
 
     @Subcommand("timers")
     fun timers(sender: CommandSender) {
-        val events = ScenarioManagerPlugin.scenarioManager?.eventScheduler?.events
+        val events = scenarioManager?.eventScheduler?.events
                 ?: throw InvalidCommandArgument(Messages.TIMERS_UNSUPPORTED, false)
 
         if (events.isEmpty())

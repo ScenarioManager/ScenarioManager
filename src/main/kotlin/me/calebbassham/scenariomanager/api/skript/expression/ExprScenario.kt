@@ -5,7 +5,7 @@ import ch.njol.skript.lang.Expression
 import ch.njol.skript.lang.SkriptParser
 import ch.njol.util.Kleenean
 import me.calebbassham.scenariomanager.api.Scenario
-import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
+import me.calebbassham.scenariomanager.api.scenarioManager
 import org.bukkit.event.Event
 
 class ExprScenario : PropertyExpression<String, Scenario>() {
@@ -17,7 +17,7 @@ class ExprScenario : PropertyExpression<String, Scenario>() {
     }
 
     override fun get(e: Event, source: Array<out String>): Array<Scenario> {
-        return get(source, fun(name: String) = ScenarioManagerPlugin.scenarioManager?.getScenario(name))
+        return get(source, fun(name: String) = scenarioManager?.getScenario(name))
     }
 
     override fun toString(e: Event?, debug: Boolean) = "The scenario ${expr.toString(e, debug)}"

@@ -4,7 +4,7 @@ import ch.njol.skript.lang.Condition
 import ch.njol.skript.lang.Expression
 import ch.njol.skript.lang.SkriptParser
 import ch.njol.util.Kleenean
-import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
+import me.calebbassham.scenariomanager.api.scenarioManager
 import org.bukkit.event.Event
 
 class CondScenarioRegistered : Condition() {
@@ -18,7 +18,7 @@ class CondScenarioRegistered : Condition() {
         return true
     }
 
-    override fun check(e: Event) = name?.check(e, { ScenarioManagerPlugin.scenarioManager?.isRegistered(it) == true }, isNegated) == true
+    override fun check(e: Event) = name?.check(e, { scenarioManager?.isRegistered(it) == true }, isNegated) == true
 
     override fun toString(e: Event?, debug: Boolean) = "Scenario registered condition: ${name?.toString(e, debug)}"
 
