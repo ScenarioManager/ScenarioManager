@@ -7,6 +7,7 @@ import ch.njol.util.Kleenean
 import me.calebbassham.scenariomanager.api.Scenario
 import me.calebbassham.scenariomanager.api.ScenarioAlreadyRegistered
 import me.calebbassham.scenariomanager.api.ScenarioNameConflict
+import me.calebbassham.scenariomanager.api.scenarioManager
 import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
 import me.calebbassham.scenariomanager.plugin.log
 import org.bukkit.event.Event
@@ -32,7 +33,7 @@ class EffRegisterScenario : Effect() {
         }
 
         try {
-            ScenarioManagerPlugin.scenarioManager?.registerScenario(scenario)
+            scenarioManager?.registerScenario(scenario)
         } catch (e: ScenarioAlreadyRegistered) {
             log.info("Tried to register ${scenario.name} but it is already registered.")
         } catch (e: ScenarioNameConflict) {
