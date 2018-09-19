@@ -8,39 +8,58 @@ interface ScenarioEventScheduler {
     /**
      * @param event The event to schedule
      * @param ticks How many ticks before the event should run
+     * @param fromStartOfGame If true, event is scheduled x ticks from when the game started. If false (default), event is scheduled x ticks from now.
      */
-    fun scheduleEvent(event: ScenarioEvent, ticks: Long)
+    fun scheduleEvent(scenario: Scenario, event: ScenarioEvent, ticks: Long, fromStartOfGame: Boolean = false)
+
+    /**
+     * Remove all events scheduled by a certain scenario.
+     * @param scenario The scenario whose events should be unscheduled.
+     */
+    fun removeScheduledEvents(scenario: Scenario)
 
     /**
      * The Long in the HashMap<ScenarioEvent, Long> should be the ticks remaining until the event.
-     * @return All of the scheduled events. If null is returned then /sm timers will not work.
+     * @return All of the scheduled events.
      */
-    val events: HashMap<ScenarioEvent, Long>?
+    val events: HashMap<ScenarioEvent, Long>
 
 }
 
 internal class DefaultScenarioEventScheduler(private val plugin: JavaPlugin) : ScenarioEventScheduler {
 
     override val events = HashMap<ScenarioEvent, Long>()
+    private var ticks: Long = 0
     private var timer: Timer? = null
 
-    override fun scheduleEvent(event: ScenarioEvent, ticks: Long) {
-        events[event] = ticks
+    override fun scheduleEvent(scenario: Scenario, event: ScenarioEvent, ticks: Long, fromStartOfGame: Boolean) {
+        event.scenario = scenario
+        events[event] = if (fromStartOfGame) ticks - this.ticks else ticks
+    }
+
+    override fun removeScheduledEvents(scenario: Scenario) {
+        val iter = events.iterator()
+        while(iter.hasNext()) {
+            val event = iter.next().key
+            if (event.scenario == scenario) {
+                iter.remove()
+            }
+        }
     }
 
     private inner class Timer : BukkitRunnable() {
 
         override fun run() {
             for ((event, triggerTicks) in events) {
-                if (triggerTicks <= 0) {
+                val ticksRemaining = triggerTicks - ticks
+                event.onTick(ticksRemaining)
+                if (ticksRemaining <= 0) {
                     events.remove(event)
                     event.run()
-                } else{
-                    events[event] = triggerTicks - 1
                 }
-
-                event.onTick(triggerTicks)
             }
+
+            ticks++
         }
 
     }

@@ -34,7 +34,7 @@ class ScenarioManager(plugin: JavaPlugin) {
      * @throws ScenarioNameConflict When another scenario is already registered with the same name.
      * @throws ScenarioAlreadyRegistered When the same scenario is already registered.
      */
-    fun registerScenario(scenario: Scenario) {
+    fun registerScenario(scenario: Scenario, plugin: JavaPlugin) {
         val existing = scenarios[scenario.name]
         if (existing != null) {
             if (existing.javaClass.isInstance(scenario)) {
@@ -44,6 +44,8 @@ class ScenarioManager(plugin: JavaPlugin) {
             }
         }
 
+        scenario.plugin = plugin
+        scenario.scenarioManager = this
         scenarios[scenario.name] = scenario
     }
 
@@ -68,7 +70,7 @@ class ScenarioManager(plugin: JavaPlugin) {
     fun <T : Scenario> getScenario(clazz: Class<T>): Scenario? = scenarios.values.firstOrNull { it.javaClass == clazz }
 
     /**
-     * Will trigger the [Scenario.onGameStart] method for all enabled scenarios
+     * Will trigger the [Scenario.onScenarioStart] method for all enabled scenarios
      * and register their event handlers. This should also be where you schedule [ScenarioEvent].
      *
      * @param players The players that are playing the game. [Scenario.onPlayerStart] will be called with all of the players.
@@ -79,7 +81,7 @@ class ScenarioManager(plugin: JavaPlugin) {
         (eventScheduler as? DefaultScenarioEventScheduler)?.startTimer()
 
         enabledScenarios.forEach { scenario ->
-            scenario.onGameStart()
+            scenario.onScenarioStart()
             players.forEach { player ->
                 scenario.onPlayerStart(player)
                 Bukkit.getPluginManager().callEvent(PlayerStartEvent(player))
@@ -93,10 +95,10 @@ class ScenarioManager(plugin: JavaPlugin) {
     }
 
     /**
-     * Will trigger the [Scenario.onGameStop] method for all enabled scenarios.
+     * Will trigger the [Scenario.onScenarioStop] method for all enabled scenarios.
      */
     fun onGameStop() {
-        enabledScenarios.forEach { it.onGameStop() }
+        enabledScenarios.forEach { it.onScenarioStop() }
 
         (eventScheduler as? DefaultScenarioEventScheduler)?.stopTimer()
 

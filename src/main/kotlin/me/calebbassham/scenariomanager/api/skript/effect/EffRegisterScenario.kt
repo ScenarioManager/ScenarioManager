@@ -28,12 +28,12 @@ class EffRegisterScenario : Effect() {
         val name = this.name?.getSingle(e) ?: return
         val description = this.description?.getSingle(e) ?: return
 
-        val scenario = object : Scenario(name, ScenarioManagerPlugin.instance) {
+        val scenario = object : Scenario(name) {
             override val description = description
         }
 
         try {
-            scenarioManager?.registerScenario(scenario)
+            scenarioManager?.registerScenario(scenario, ScenarioManagerPlugin.instance)
         } catch (e: ScenarioAlreadyRegistered) {
             log.info("Tried to register ${scenario.name} but it is already registered.")
         } catch (e: ScenarioNameConflict) {

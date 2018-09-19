@@ -6,6 +6,8 @@ package me.calebbassham.scenariomanager.api
  */
 abstract class ScenarioEvent(val name: String, val hide: Boolean = false) : Runnable {
 
+    lateinit var scenario: Scenario
+
     open fun onTick(ticksRemaining: Long) {}
 
 }

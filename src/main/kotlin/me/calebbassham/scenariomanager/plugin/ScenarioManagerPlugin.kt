@@ -95,7 +95,7 @@ class ScenarioManagerPlugin : JavaPlugin() {
         Skript.registerEffect(EffTriggerGameStartEvent::class.java, "trigger game start event with %players%")
         Skript.registerEffect(EffTriggerGameStopEvent::class.java, "trigger game stop event")
         Skript.registerEffect(EffTriggerPlayerStartEvent::class.java, "trigger player start event with %player%")
-        Skript.registerEffect(EffScheduleScenarioEvent::class.java, "schedule scenario event [with name ]%string% to run in %timespan%[ and hide]")
+        Skript.registerEffect(EffScheduleScenarioEvent::class.java, "schedule scenario event for %scenario% [with name ]%string% to run in %timespan%[ and hide]")
 
         Skript.registerExpression(ExprScenario::class.java, Scenario::class.java, ExpressionType.COMBINED, "[the] scenario [with name ]%string%")
         Skript.registerExpression(ExprScenarioDescription::class.java, String::class.java, ExpressionType.COMBINED, "[the] description of %scenario%", "%scenario%'s description")
