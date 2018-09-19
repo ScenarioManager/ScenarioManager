@@ -1,11 +1,11 @@
 package me.calebbassham.scenariomanager.api
 
+import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
-import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.potion.PotionEffect
 
 /**
  * A [Scenario] can be registered to a [ScenarioManager] using [ScenarioManager.registerScenario].
@@ -16,12 +16,18 @@ import org.bukkit.potion.PotionEffect
  * @param plugin The [plugin][JavaPlugin] that this scenario is instantiated from.
  * @constructor Instantiates a new scenario.
  */
-abstract class Scenario(val name: String, internal val plugin: JavaPlugin) {
+abstract class Scenario(val name: String) {
+
+    lateinit var plugin: JavaPlugin
+        internal set
+
+    lateinit var scenarioManager: ScenarioManager
+        internal set
 
     /**
      * The description of the scenario.
      */
-    abstract val description: String
+    open val description: String = plugin.description.description
 
     /**
      * Determines if this scenario is enabled.
@@ -32,13 +38,21 @@ abstract class Scenario(val name: String, internal val plugin: JavaPlugin) {
 
             field = value
 
-            if (!value && this is Listener) HandlerList.unregisterAll(this)
+            if (!value && this is Listener) {
+                HandlerList.unregisterAll(this)
+                removeScheduledEvents()
+            }
+
+            if (value && this is Listener && scenarioManager.isGameRunning()) {
+                Bukkit.getPluginManager().registerEvents(this, plugin)
+            }
         }
 
     /**
-     * Called when the game is started.
+     * When the scenario is started, usually at the start of the
+     * game unless the scenario is enabled in the middle of the game.
      */
-    open fun onGameStart() {}
+    open fun onScenarioStart() {}
 
     /**
      * This method should be used to handle doing things to players when the game starts.
@@ -48,7 +62,48 @@ abstract class Scenario(val name: String, internal val plugin: JavaPlugin) {
     open fun onPlayerStart(player: Player) {}
 
     /**
-     * Called when the game is stopped.
+     * Called when the scenario is stopped, usually at the end of the game
+     * unless the scenario is stopped in the middle of the game.
+     *
+     * Game events are automatically canceled when a scenario is stopped.
+     *
+     * If the scenario gives players things like items, potions effect, etc...
+     * they should be removed here.
      */
-    open fun onGameStop() {}
+    open fun onScenarioStop() {}
+
+    protected fun removeScheduledEvents() {
+        scenarioManager.eventScheduler.removeScheduledEvents(this)
+    }
+
+    /**
+     * Shortcut to schedule a scenario event.
+     * @see ScenarioEventScheduler.scheduleEvent
+     */
+    protected fun scheduleEvent(event: ScenarioEvent, ticks: Long) {
+        scenarioManager.eventScheduler.scheduleEvent(this, event, ticks)
+    }
+
+    /**
+     * The prefix to use when sending messages.
+     */
+    private val prefix = ChatColor.translateAlternateColorCodes('&', "&8[&a$name&8]&7")
+
+    /**
+     * Broadcast a message with the scenario prefix.
+     * @param msg The message to send to the player.
+     */
+    protected fun broadcast(msg: String) {
+        Bukkit.getOnlinePlayers().forEach { it.sendMessage("$prefix $msg") }
+    }
+
+    /**
+     * Send a message to a player with the scenario prefix.
+     * @param player The player to send the message to.
+     * @param msg The message to send to the player.
+     */
+    protected fun sendMessage(player: Player, msg: String) {
+        player.sendMessage("$prefix $msg")
+    }
+
 }
