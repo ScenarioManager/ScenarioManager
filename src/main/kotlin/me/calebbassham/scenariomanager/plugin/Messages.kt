@@ -22,6 +22,7 @@ internal object Messages {
     val NO_ENABLED_SCENARIOS_HAVE_SETTING = "$PREFIX No enabled scenarios have settings."
     val NOT_A_SETTING = "$PREFIX That is not a scenario setting."
     val COULD_NOT_PARSE_SETTING_VALUE = "$PREFIX Could not parse setting value."
+    val COULD_NOT_GET_SCENARIOS = "$PREFIX Could not get scenarios."
 }
 
 internal fun CommandSender.sendMessage(message: String, vararg replacements: Any) {
