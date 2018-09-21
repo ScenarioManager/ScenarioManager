@@ -82,8 +82,8 @@ abstract class Scenario(val name: String) {
      * Shortcut to schedule a scenario event.
      * @see ScenarioEventScheduler.scheduleEvent
      */
-    protected fun scheduleEvent(event: ScenarioEvent, ticks: Long) {
-        scenarioManager.eventScheduler.scheduleEvent(this, event, ticks)
+    protected fun scheduleEvent(event: ScenarioEvent, ticks: Long, fromStartOfGame: Boolean = false) {
+        scenarioManager.eventScheduler.scheduleEvent(this, event, ticks, fromStartOfGame)
     }
 
     /**
