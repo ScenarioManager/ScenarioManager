@@ -6,8 +6,6 @@ import ch.njol.skript.lang.ExpressionType
 import ch.njol.skript.registrations.Classes
 import ch.njol.skript.registrations.EventValues
 import ch.njol.skript.util.Getter
-import co.aikar.commands.InvalidCommandArgument
-import co.aikar.commands.PaperCommandManager
 import me.calebbassham.scenariomanager.api.Scenario
 import me.calebbassham.scenariomanager.api.ScenarioManager
 import me.calebbassham.scenariomanager.api.scenarioManager
@@ -49,27 +47,12 @@ class ScenarioManagerPlugin : JavaPlugin() {
             skript()
         }
 
-        PaperCommandManager(this).apply {
-            commandContexts.registerContext(Scenario::class.java, {
-                val scenName = it.popFirstArg().replace("_", " ")
-                return@registerContext scenarioManager?.getScenario(scenName)
-                        ?: throw InvalidCommandArgument(String.format(Messages.NOT_A_SCENARIO, scenName), false)
-            })
-
-            commandCompletions.registerCompletion("scenarios", {
-                scenarioManager?.registeredScenarios?.map { it.name.replace(" ", "_") }
-            })
-
-            commandCompletions.registerCompletion("enabledScenarios", {
-                scenarioManager?.enabledScenarios?.map { it.name.replace(" ", "_") }
-            })
-
-            commandCompletions.registerCompletion("disabledScenarios", {
-                scenarioManager?.registeredScenarios?.filterNot { it.isEnabled }?.map { it.name.replace(" ", "_") }
-            })
-
-            registerCommand(ScenarioManagerCmd())
+        Bukkit.getPluginCommand("scenariomanager").apply {
+            val cmd = ScenarioManagerCmd()
+            executor = cmd
+            tabCompleter = cmd
         }
+
     }
 
     private fun skript() {
