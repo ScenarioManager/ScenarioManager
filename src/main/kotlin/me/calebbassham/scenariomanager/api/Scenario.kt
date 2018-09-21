@@ -43,7 +43,7 @@ abstract class Scenario(val name: String) {
                 removeScheduledEvents()
             }
 
-            if (value && this is Listener && scenarioManager.isGameRunning()) {
+            if (value && this is Listener && scenarioManager.gameProvider.isGameRunning()) {
                 Bukkit.getPluginManager().registerEvents(this, plugin)
             }
         }
