@@ -48,7 +48,7 @@ abstract class Scenario(val name: String) {
             }
         }
 
-    open val settings: List<ScenarioSetting<Any>>? = null
+    open val settings: List<ScenarioSetting<*>>? = null
 
     /**
      * When the scenario is started, usually at the start of the

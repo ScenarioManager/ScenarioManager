@@ -5,6 +5,7 @@ import co.aikar.commands.InvalidCommandArgument
 import co.aikar.commands.annotation.*
 import me.calebbassham.scenariomanager.ScenarioManagerUtils
 import me.calebbassham.scenariomanager.api.Scenario
+import me.calebbassham.scenariomanager.api.ScenarioSetting
 import me.calebbassham.scenariomanager.api.ScenarioSettingParseException
 import me.calebbassham.scenariomanager.api.scenarioManager
 import me.calebbassham.scenariomanager.plugin.Messages
@@ -96,7 +97,7 @@ class ScenarioManagerCmd : BaseCommand() {
 
         @Subcommand("set")
         fun set(sender: CommandSender, scenario: Scenario, scenarioSetting: String, strValue: String) {
-            val setting = scenario.settings?.firstOrNull { it.name.equals(scenarioSetting.replace("_", " "), ignoreCase = true) }
+            val setting = scenario.settings?.firstOrNull { it.name.equals(scenarioSetting.replace("_", " "), ignoreCase = true) } as? ScenarioSetting<Any>
 
             if (setting == null) {
                 sender.sendMessage(Messages.NOT_A_SCENARIO)
