@@ -14,7 +14,7 @@ buildscript {
 }
 
 group = 'me.calebbassham'
-version = '0.3.3'
+version = '0.3.4'
 
 apply plugin: 'kotlin'
 apply plugin: 'maven-publish'
