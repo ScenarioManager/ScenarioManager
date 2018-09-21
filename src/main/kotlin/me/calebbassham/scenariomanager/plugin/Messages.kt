@@ -18,6 +18,10 @@ internal object Messages {
     val TIMERS_UNSUPPORTED = "This command is unsupported by the current scenario event scheduler."
     val TIMER = "$PREFIX $HIGHLIGHT%s: &a%s"
     val NO_TIMERS = "$PREFIX There are no timers running."
+    val SCENARIO_SETTING = "$MAIN%s &8= $MAIN%s"
+    val NO_ENABLED_SCENARIOS_HAVE_SETTING = "$PREFIX No enabled scenarios have settings."
+    val NOT_A_SETTING = "$PREFIX That is not a scenario setting."
+    val COULD_NOT_PARSE_SETTING_VALUE = "$PREFIX Could not parse setting value."
 }
 
 internal fun CommandSender.sendMessage(message: String, vararg replacements: Any) {

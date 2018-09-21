@@ -49,6 +49,12 @@ class ScenarioManager(plugin: JavaPlugin) {
         scenarios[scenario.name] = scenario
     }
 
+    val scenarioSettingParsers = HashMap<Class<*>, ScenarioSettingParser<*>>().apply {
+        put(TimeSpan::class.java, TimeSpanParser())
+    }
+
+    inline fun <reified T> parseScenarioSetting(input: String): T = scenarioSettingParsers[T::class.java]?.parse(input) as T ?: throw ScenarioSettingParseException("no parser for class ${T::class.java.name}")
+
     /**
      * @param name The name of the scenario to check.
      * @return Is the scenario registered?
