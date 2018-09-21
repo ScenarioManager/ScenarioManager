@@ -48,6 +48,8 @@ abstract class Scenario(val name: String) {
             }
         }
 
+    val settings: List<ScenarioSetting<Any>>? = null
+
     /**
      * When the scenario is started, usually at the start of the
      * game unless the scenario is enabled in the middle of the game.
@@ -87,7 +89,7 @@ abstract class Scenario(val name: String) {
     /**
      * The prefix to use when sending messages.
      */
-    private val prefix = ChatColor.translateAlternateColorCodes('&', "&8[&a$name&8]&7")
+    internal val prefix = ChatColor.translateAlternateColorCodes('&', "&8[&a$name&8]&7")
 
     /**
      * Broadcast a message with the scenario prefix.
