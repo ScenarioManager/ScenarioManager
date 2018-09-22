@@ -37,7 +37,7 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
             describe(sender, args[1])
         }
 
-        if (args.size == 3 && args[0].equals("settings", ignoreCase = true) && args[1].equals("list", true)) {
+        if (args.size == 2 && args[0].equals("settings", ignoreCase = true) && args[1].equals("list", true)) {
             listScenarioSettings(sender)
         }
 
