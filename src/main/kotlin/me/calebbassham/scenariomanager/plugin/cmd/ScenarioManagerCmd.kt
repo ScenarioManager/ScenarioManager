@@ -165,9 +165,9 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
         val value: Any
 
         try {
-            value = scenarioManager?.scenarioSettingParsers?.get(setting::class.java)?.parse(strValue) ?: throw ScenarioSettingParseException("no parser for ${setting::class.java.name}")
+            value = scenarioManager?.scenarioSettingParsers?.get(setting.value::class.java)?.parse(strValue) ?: throw ScenarioSettingParseException("no parser for ${setting.value::class.java.name}")
         } catch (e: ScenarioSettingParseException) {
-            sender.sendMessage(Messages.COULD_NOT_PARSE_SETTING_VALUE)
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.COULD_NOT_PARSE_SETTING_VALUE))
             log.log(Level.SEVERE, e.toString())
             return
         }
