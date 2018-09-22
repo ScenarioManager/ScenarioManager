@@ -41,8 +41,12 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
             listScenarioSettings(sender)
         }
 
-        if (args.size == 3 && args[0].equals("settings", ignoreCase = true) && args[1].equals("set", true)) {
+        if (args.size == 5 && args[0].equals("settings", ignoreCase = true) && args[1].equals("set", true)) {
             setScenarioSetting(sender, args[2], args[3], args[4])
+        } else if (args.size == 4 && args[0].equals("settings", ignoreCase = true) && args[1].equals("set", true)) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.SPECIFY_SETTING_VALUE))
+        } else if (args.size == 3 && args[0].equals("settings", ignoreCase = true) && args[1].equals("set", true)) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.SPECIFY_SCENARIO))
         }
 
         return true
