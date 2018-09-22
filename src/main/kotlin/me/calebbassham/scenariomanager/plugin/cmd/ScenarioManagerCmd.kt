@@ -168,26 +168,29 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
         sender.sendMessage(Messages.SCENARIO_SETTING, setting.name, setting.displayValue())
     }
 
-    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): List<String>? {
+    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): List<String> {
         if (args.size == 1) {
-            return listOf("list", "enable", "disable", "timers", "settings")
+            return listOf("list", "enable", "disable", "timers", "settings").minimizeTabCompletions(args.last())
         }
 
         if (args.size == 2) {
             if (args[0].equals("enable", true)) {
-                return scenarioManager?.registeredScenarios?.filterNot { it.isEnabled }?.map { it.name }
+                return scenarioManager?.registeredScenarios?.filterNot { it.isEnabled }?.map { it.name }?.minimizeTabCompletions(args.last())
+                    ?: emptyList()
             }
 
             if (args[0].equals("disable", true)) {
-                return scenarioManager?.enabledScenarios?.map { it.name }
+                return scenarioManager?.enabledScenarios?.map { it.name }?.minimizeTabCompletions(args.last())
+                    ?: emptyList()
             }
 
             if (args[0].equals("describe", true)) {
-                return scenarioManager?.registeredScenarios?.map { it.name }
+                return scenarioManager?.registeredScenarios?.map { it.name }?.minimizeTabCompletions(args.last())
+                    ?: emptyList()
             }
 
             if (args[0].equals("settings", true)) {
-                return listOf("list", "set")
+                return listOf("list", "set").minimizeTabCompletions(args.last())
             }
         }
 
@@ -197,6 +200,8 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
                     return scenarioManager?.enabledScenarios?.filter {
                         it.settings?.isNotEmpty() ?: false
                     }?.map { it.name }
+                        ?.minimizeTabCompletions(args.last())
+                        ?: emptyList()
                 }
             }
         }
@@ -209,11 +214,15 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
                             it.settings
                                 ?.map { it.name }
                                 ?.map { it.replace(" ", "_") }
-                        }
+                        }?.minimizeTabCompletions(args.last())
+                        ?: emptyList()
                 }
             }
         }
 
-        return null
+        return emptyList()
     }
+
+    private fun List<String>.minimizeTabCompletions(arg: String): List<String> = this.map { it.toLowerCase() }.filter { it.startsWith(arg.toLowerCase()) }
+
 }
