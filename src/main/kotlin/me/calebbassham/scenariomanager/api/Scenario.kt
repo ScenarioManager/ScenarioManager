@@ -30,6 +30,9 @@ abstract class Scenario(val name: String) {
     open val description: String
         get() = plugin.description.description
 
+    open val authors: List<String>
+        get() = plugin.description.authors
+
     /**
      * Determines if this scenario is enabled.
      */
