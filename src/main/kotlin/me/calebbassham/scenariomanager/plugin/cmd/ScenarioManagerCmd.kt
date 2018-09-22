@@ -227,6 +227,6 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
         return emptyList()
     }
 
-    private fun List<String>.minimizeTabCompletions(arg: String): List<String> = this.map { it.toLowerCase() }.filter { it.startsWith(arg.toLowerCase()) }
+    private fun List<String>.minimizeTabCompletions(arg: String): List<String> = this.filter { it.toLowerCase().startsWith(arg.toLowerCase()) }
 
 }
