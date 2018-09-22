@@ -1,6 +1,7 @@
 package me.calebbassham.scenariomanager.plugin.cmd
 
 import me.calebbassham.scenariomanager.ScenarioManagerUtils
+import me.calebbassham.scenariomanager.ScenarioManagerUtils.format
 import me.calebbassham.scenariomanager.api.ScenarioSetting
 import me.calebbassham.scenariomanager.api.ScenarioSettingParseException
 import me.calebbassham.scenariomanager.api.scenarioManager
@@ -97,7 +98,7 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
             return
         }
 
-        sender.sendMessage(Messages.DESCRIBE_SCENARIO, scenario.name, scenario.description)
+        sender.sendMessage(Messages.DESCRIBE_SCENARIO, scenario.name, scenario.description, scenario.authors.format())
     }
 
     private fun timers(sender: CommandSender) {
