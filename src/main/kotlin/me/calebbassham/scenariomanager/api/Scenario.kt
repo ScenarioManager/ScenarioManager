@@ -27,7 +27,8 @@ abstract class Scenario(val name: String) {
     /**
      * The description of the scenario.
      */
-    open val description: String = plugin.description.description
+    open val description: String
+        get() = plugin.description.description
 
     /**
      * Determines if this scenario is enabled.
