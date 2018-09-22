@@ -53,8 +53,12 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
         val disabled = scenarioManager?.registeredScenarios?.filterNot { it.isEnabled }?.joinToString(", ") { it.name }
             ?: return
 
-        if (!enabled.isEmpty()) sender.sendMessage(Messages.ENABLED_SCENARIOS, enabled)
-        if (!disabled.isEmpty()) sender.sendMessage(Messages.DISABLED_SCENARIOS, disabled)
+        if (enabled.isEmpty() && disabled.isEmpty()) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.NO_INSTALLED_SCENARIOS))
+        } else {
+            if (!enabled.isEmpty()) sender.sendMessage(Messages.ENABLED_SCENARIOS, enabled)
+            if (!disabled.isEmpty()) sender.sendMessage(Messages.DISABLED_SCENARIOS, disabled)
+        }
     }
 
     private fun enable(sender: CommandSender, scenarioName: String) {
