@@ -159,7 +159,7 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
         val setting = scenario.settings?.firstOrNull { it.name.equals(settingName.replace("_", " "), ignoreCase = true) } as? ScenarioSetting<Any>
 
         if (setting == null) {
-            sender.sendMessage(Messages.NOT_A_SCENARIO)
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.NOT_A_SETTING))
             return
         }
 
