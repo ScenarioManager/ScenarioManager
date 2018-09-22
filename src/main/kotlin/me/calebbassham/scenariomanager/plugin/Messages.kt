@@ -27,6 +27,7 @@ internal object Messages {
     val NO_INSTALLED_SCENARIOS = "$PREFIX There are not scenarios installed."
     val SPECIFY_SETTING_VALUE = "$PREFIX You must specify a value for the setting."
     val SPECIFY_SCENARIO = "$PREFIX You must specify a scenario."
+    val NO_SCENARIOS_ENABLED = "$PREFIX There are no scenarios enabled."
 }
 
 internal fun CommandSender.sendMessage(message: String, vararg replacements: Any) {

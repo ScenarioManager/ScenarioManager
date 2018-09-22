@@ -20,37 +20,45 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (args.size == 1 && args[0].equals("list", ignoreCase = true)) {
             list(sender)
-        }
-
-        if (args.size == 1 && args[0].equals("timers", ignoreCase = true)) {
+        } else if (args.size == 1 && args[0].equals("timers", ignoreCase = true)) {
             timers(sender)
-        }
-
-        if (args.size == 2 && args[0].equals("enable", ignoreCase = true)) {
+        } else if (args.size == 2 && args[0].equals("enable", ignoreCase = true)) {
             enable(sender, args[1])
-        }
-
-        if (args.size == 2 && args[0].equals("disable", ignoreCase = true)) {
+        } else if (args.size == 2 && args[0].equals("disable", ignoreCase = true)) {
             disable(sender, args[1])
-        }
-
-        if (args.size == 2 && args[0].equals("describe", ignoreCase = true)) {
+        } else if (args.size == 2 && args[0].equals("describe", ignoreCase = true)) {
             describe(sender, args[1])
-        }
-
-        if (args.size == 2 && args[0].equals("settings", ignoreCase = true) && args[1].equals("list", true)) {
+        } else if (args.size == 2 && args[0].equals("settings", ignoreCase = true) && args[1].equals("list", true)) {
             listScenarioSettings(sender)
-        }
-
-        if (args.size == 5 && args[0].equals("settings", ignoreCase = true) && args[1].equals("set", true)) {
+        } else if (args.size == 5 && args[0].equals("settings", ignoreCase = true) && args[1].equals("set", true)) {
             setScenarioSetting(sender, args[2], args[3], args[4])
         } else if (args.size == 4 && args[0].equals("settings", ignoreCase = true) && args[1].equals("set", true)) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.SPECIFY_SETTING_VALUE))
         } else if (args.size == 3 && args[0].equals("settings", ignoreCase = true) && args[1].equals("set", true)) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.SPECIFY_SCENARIO))
+        } else {
+            listEnabledScenarioDescriptions(sender)
         }
 
         return true
+    }
+
+    private fun listEnabledScenarioDescriptions(sender: CommandSender) {
+        val scenarios = scenarioManager?.enabledScenarios
+
+        if (scenarios == null) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.COULD_NOT_GET_SCENARIOS))
+            return
+        }
+
+        if (scenarios.isEmpty()) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.NO_SCENARIOS_ENABLED))
+            return
+        }
+
+        for (scenario in scenarios) {
+            sender.sendMessage(Messages.DESCRIBE_SCENARIO, scenario.name, scenario.description, scenario.authors.format())
+        }
     }
 
     private fun list(sender: CommandSender) {
