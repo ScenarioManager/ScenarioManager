@@ -51,6 +51,8 @@ class ScenarioManager(plugin: JavaPlugin) {
         scenario.plugin = plugin
         scenario.scenarioManager = this
         scenarios[scenario.name] = scenario
+
+        log.info("${scenario.name} has been registered.")
     }
 
     val scenarioSettingParsers = HashMap<Class<*>, ScenarioSettingParser<*>>().apply {
