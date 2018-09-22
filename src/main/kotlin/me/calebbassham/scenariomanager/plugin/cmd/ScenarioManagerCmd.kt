@@ -138,7 +138,7 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
             sender.sendMessage(scen.prefix)
 
             for (setting in settings) {
-                sender.sendMessage(Messages.SCENARIO_SETTING, setting.name, setting.displayValue())
+                sender.sendMessage(Messages.LISTED_SCENARIO_SETTING, setting.name, setting.description, setting.displayValue())
             }
 
             if (i != enabled.lastIndex) {
