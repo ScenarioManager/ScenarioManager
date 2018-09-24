@@ -57,7 +57,9 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
         }
 
         for (scenario in scenarios) {
-            sender.sendMessage(Messages.DESCRIBE_SCENARIO, scenario.name, scenario.description, scenario.authors.format())
+            val authors = scenario.authors
+            val authorsText = if(authors == null || authors.isEmpty()) "anonymous" else authors.format()
+            sender.sendMessage(Messages.DESCRIBE_SCENARIO, scenario.name, scenario.description, authorsText)
         }
     }
 
@@ -106,7 +108,10 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
             return
         }
 
-        sender.sendMessage(Messages.DESCRIBE_SCENARIO, scenario.name, scenario.description, scenario.authors.format())
+        val authors = scenario.authors
+        val authorsText = if(authors == null || authors.isEmpty()) "anonymous" else authors.format()
+
+        sender.sendMessage(Messages.DESCRIBE_SCENARIO, scenario.name, scenario.description, authorsText)
     }
 
     private fun timers(sender: CommandSender) {
