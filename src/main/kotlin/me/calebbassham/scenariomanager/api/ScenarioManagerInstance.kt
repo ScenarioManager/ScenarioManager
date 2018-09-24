@@ -1,3 +1,5 @@
+@file:JvmName("ScenarioManagerInstance")
+
 package me.calebbassham.scenariomanager.api
 
 var scenarioManager: ScenarioManager? = null
