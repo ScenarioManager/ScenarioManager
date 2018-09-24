@@ -64,9 +64,8 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
     }
 
     private fun list(sender: CommandSender) {
-        val enabled = scenarioManager?.enabledScenarios?.joinToString(", ") { it.name } ?: return
-        val disabled = scenarioManager?.registeredScenarios?.filterNot { it.isEnabled }?.joinToString(", ") { it.name }
-            ?: return
+        val enabled = scenarioManager?.enabledScenarios?.map { it.name }?.format() ?: return
+        val disabled = scenarioManager?.registeredScenarios?.filterNot { it.isEnabled }?.map { it.name }?.format() ?: return
 
         if (enabled.isEmpty() && disabled.isEmpty()) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.NO_INSTALLED_SCENARIOS))
