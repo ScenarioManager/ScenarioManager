@@ -58,6 +58,7 @@ class ScenarioManager(plugin: JavaPlugin) {
     val scenarioSettingParsers = HashMap<Class<*>, ScenarioSettingParser<*>>().apply {
         put(TimeSpan::class.java, TimeSpanParser())
         put(Int::class.java, IntParser())
+        put(java.lang.Integer::class.java, IntParser())
     }
 
     inline fun <reified T> parseScenarioSetting(input: String): T = scenarioSettingParsers[T::class.java]?.parse(input) as T ?: throw ScenarioSettingParseException("no parser for class ${T::class.java.name}")
