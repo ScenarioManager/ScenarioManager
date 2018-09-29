@@ -18,7 +18,7 @@ class CondScenarioRegistered : Condition() {
         return true
     }
 
-    override fun check(e: Event) = name?.check(e, { scenarioManager?.isRegistered(it) == true }, isNegated) == true
+    override fun check(e: Event) = name?.check(e, { scenarioManager.getScenario(it) != null}, isNegated) == true
 
     override fun toString(e: Event?, debug: Boolean) = "Scenario registered condition: ${name?.toString(e, debug)}"
 

@@ -6,7 +6,7 @@ import ch.njol.skript.lang.SkriptParser
 import ch.njol.skript.util.Timespan
 import ch.njol.util.Kleenean
 import me.calebbassham.scenariomanager.api.Scenario
-import me.calebbassham.scenariomanager.api.ScenarioEvent
+import me.calebbassham.scenariomanager.api.events.ScenarioEvent
 import me.calebbassham.scenariomanager.api.scenarioManager
 import me.calebbassham.scenariomanager.api.skript.event.SkriptScenarioEventTriggerEvent
 import org.bukkit.Bukkit

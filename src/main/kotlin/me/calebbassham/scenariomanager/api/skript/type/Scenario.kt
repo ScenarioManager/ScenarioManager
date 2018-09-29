@@ -23,6 +23,6 @@ class ScenarioParser : Parser<Scenario>() {
 
     override fun toVariableNameString(scen: Scenario) = scen.name
 
-    override fun parse(s: String, context: ParseContext?) = scenarioManager?.getScenario(s)
+    override fun parse(s: String, context: ParseContext?) = scenarioManager.getScenario(s)
 
 }

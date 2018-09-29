@@ -4,9 +4,9 @@ import ch.njol.skript.lang.Effect
 import ch.njol.skript.lang.Expression
 import ch.njol.skript.lang.SkriptParser
 import ch.njol.util.Kleenean
-import me.calebbassham.scenariomanager.api.Scenario
-import me.calebbassham.scenariomanager.api.ScenarioAlreadyRegistered
-import me.calebbassham.scenariomanager.api.ScenarioNameConflict
+import me.calebbassham.scenariomanager.api.SimpleScenario
+import me.calebbassham.scenariomanager.api.exceptions.ScenarioAlreadyRegistered
+import me.calebbassham.scenariomanager.api.exceptions.ScenarioNameConflict
 import me.calebbassham.scenariomanager.api.scenarioManager
 import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
 import me.calebbassham.scenariomanager.plugin.log
@@ -28,12 +28,13 @@ class EffRegisterScenario : Effect() {
         val name = this.name?.getSingle(e) ?: return
         val description = this.description?.getSingle(e) ?: return
 
-        val scenario = object : Scenario(name) {
+        val scenario = object : SimpleScenario() {
+            override val name = name
             override val description = description
         }
 
         try {
-            scenarioManager?.registerScenario(scenario, ScenarioManagerPlugin.instance)
+            scenarioManager.register(scenario, ScenarioManagerPlugin.instance)
         } catch (e: ScenarioAlreadyRegistered) {
             log.info("Tried to register ${scenario.name} but it is already registered.")
         } catch (e: ScenarioNameConflict) {

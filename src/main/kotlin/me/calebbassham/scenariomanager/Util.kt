@@ -4,6 +4,9 @@ package me.calebbassham.scenariomanager
 import org.bukkit.Location
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
+import java.util.*
+
+
 
 object ScenarioManagerUtils {
 
@@ -76,6 +79,36 @@ object ScenarioManagerUtils {
         return sb.toString()
     }
 
+    internal fun humanizePascalCase(str: String): String {
+        if (str.isEmpty()) {
+            return ""
+        }
 
+        val c = str.toCharArray()
+        val list = ArrayList<String>()
+        var tokenStart = 0
+        var currentType = Character.getType(c[tokenStart])
+        for (pos in tokenStart + 1 until c.size) {
+            val type = Character.getType(c[pos])
+            if (type == currentType) {
+                continue
+            }
+            if (type == Character.LOWERCASE_LETTER.toInt()
+                && currentType == Character.UPPERCASE_LETTER.toInt()) {
+                val newTokenStart = pos - 1
+                if (newTokenStart != tokenStart) {
+                    list.add(String(c, tokenStart, newTokenStart - tokenStart))
+                    tokenStart = newTokenStart
+                }
+            } else {
+                list.add(String(c, tokenStart, pos - tokenStart))
+                tokenStart = pos
+            }
+            currentType = type
+        }
+        list.add(String(c, tokenStart, c.size - tokenStart))
+
+        return list.joinToString(" ")
+    }
 
 }

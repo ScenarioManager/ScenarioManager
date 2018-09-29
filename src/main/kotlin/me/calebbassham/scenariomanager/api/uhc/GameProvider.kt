@@ -1,4 +1,4 @@
-package me.calebbassham.scenariomanager.api
+package me.calebbassham.scenariomanager.api.uhc
 
 /**
  * Provided game information to the scenario manager.
@@ -12,5 +12,3 @@ interface GameProvider {
     fun isGameRunning() = true
 
 }
-
-class DefaultGameProvider : GameProvider

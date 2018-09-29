@@ -2,5 +2,8 @@
 
 package me.calebbassham.scenariomanager.api
 
-var scenarioManager: ScenarioManager? = null
-    internal set
+// trick the compiler
+internal var nullableScenarioManager: SimpleScenarioManager? = null
+
+val scenarioManager: SimpleScenarioManager
+    get() = nullableScenarioManager!!
