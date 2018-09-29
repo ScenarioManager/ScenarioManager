@@ -2,8 +2,6 @@ package me.calebbassham.scenariomanager.api
 
 import me.calebbassham.scenariomanager.api.events.DefaultScenarioEventScheduler
 import me.calebbassham.scenariomanager.api.events.ScenarioEventScheduler
-import me.calebbassham.scenariomanager.api.exceptions.ScenarioAlreadyRegistered
-import me.calebbassham.scenariomanager.api.exceptions.ScenarioNameConflict
 import me.calebbassham.scenariomanager.api.exceptions.ScenarioSettingParseException
 import me.calebbassham.scenariomanager.api.settings.ScenarioSettingParser
 import me.calebbassham.scenariomanager.api.settings.parsers.IntParser
@@ -38,14 +36,14 @@ open class SimpleScenarioManager(plugin: JavaPlugin) : ScenarioManager {
 
     override fun register(scenario: Scenario, plugin: JavaPlugin) {
 
-        val existing = getScenario(scenario.name)
-        if (existing != null) {
-            if (existing.javaClass.isInstance(scenario)) {
-                throw ScenarioAlreadyRegistered(scenario.name)
-            } else {
-                throw ScenarioNameConflict(scenario.name)
-            }
-        }
+//        val existing = getScenario(scenario.name)
+//        if (existing != null) {
+//            if (existing.javaClass.isInstance(scenario)) {
+//                throw ScenarioAlreadyRegistered(scenario.name)
+//            } else {
+//                throw ScenarioNameConflict(scenario.name)
+//            }
+//        }
 
         if(scenario is SimpleScenario) {
             scenario.scenarioManager = this
