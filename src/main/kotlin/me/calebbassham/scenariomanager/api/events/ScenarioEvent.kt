@@ -1,4 +1,6 @@
-package me.calebbassham.scenariomanager.api
+package me.calebbassham.scenariomanager.api.events
+
+import me.calebbassham.scenariomanager.api.Scenario
 
 /**
  * @param name The name of the event

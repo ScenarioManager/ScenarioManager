@@ -19,7 +19,7 @@ class EffTriggerGameStartEvent : Effect() {
     }
 
     override fun execute(e: Event?) {
-        scenarioManager?.onGameStart(players?.getAll(e) ?: emptyArray())
+        scenarioManager.onGameStart(players?.getAll(e) ?: emptyArray())
     }
 
     override fun toString(p0: Event?, p1: Boolean) = "Trigger Game Start Event"

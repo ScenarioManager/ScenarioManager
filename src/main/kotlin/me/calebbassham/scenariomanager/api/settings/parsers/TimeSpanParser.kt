@@ -1,6 +1,7 @@
-package me.calebbassham.scenariomanager.api
+package me.calebbassham.scenariomanager.api.settings.parsers
 
-data class TimeSpan(val ticks: Long)
+import me.calebbassham.scenariomanager.api.settings.ScenarioSettingParser
+import me.calebbassham.scenariomanager.api.settings.timespan.TimeSpan
 
 class TimeSpanParser : ScenarioSettingParser<TimeSpan> {
 

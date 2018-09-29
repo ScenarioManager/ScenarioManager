@@ -7,8 +7,8 @@ import ch.njol.skript.registrations.Classes
 import ch.njol.skript.registrations.EventValues
 import ch.njol.skript.util.Getter
 import me.calebbassham.scenariomanager.api.Scenario
-import me.calebbassham.scenariomanager.api.ScenarioManager
-import me.calebbassham.scenariomanager.api.scenarioManager
+import me.calebbassham.scenariomanager.api.SimpleScenarioManager
+import me.calebbassham.scenariomanager.api.nullableScenarioManager
 import me.calebbassham.scenariomanager.api.skript.condition.CondScenario
 import me.calebbassham.scenariomanager.api.skript.condition.CondScenarioRegistered
 import me.calebbassham.scenariomanager.api.skript.effect.*
@@ -39,7 +39,7 @@ class ScenarioManagerPlugin : JavaPlugin() {
             log = this.logger
         }
 
-        scenarioManager = ScenarioManager(this)
+        nullableScenarioManager = SimpleScenarioManager(this)
 
         instance = this
 

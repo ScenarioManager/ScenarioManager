@@ -1,4 +1,4 @@
-package me.calebbassham.scenariomanager.api
+package me.calebbassham.scenariomanager.api.settings
 
 interface ScenarioSettingParser<out T> {
 
