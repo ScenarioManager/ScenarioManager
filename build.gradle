@@ -37,17 +37,15 @@ jar {
     archiveName = "${baseName}.${extension}"
 }
 
-if (tasks["publish"] != null) {
-    publishing {
-        publications {
-            scenarioManager(MavenPublication) {
-                from components.java
-            }
+publishing {
+    publications {
+        scenarioManager(MavenPublication) {
+            from components.java
         }
+    }
 
-
-
-        repositories {
+    repositories {
+        try {
             maven {
                 url = "s3://caleb-maven/"
 
@@ -58,6 +56,8 @@ if (tasks["publish"] != null) {
                     secretKey = awsCredentials.AWSSecretKey
                 }
             }
+        } catch (Exception ignored) {
+
         }
     }
 }
