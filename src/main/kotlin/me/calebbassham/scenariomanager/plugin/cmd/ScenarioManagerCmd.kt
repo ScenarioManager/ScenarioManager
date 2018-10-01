@@ -19,7 +19,9 @@ import java.util.logging.Level
 class ScenarioManagerCmd : CommandExecutor, TabCompleter {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if (args.size == 1 && args[0].equals("list", ignoreCase = true)) {
+        val success: Boolean = if (args.isEmpty()) {
+            listEnabledScenarioDescriptions(sender)
+        } else if (args.size == 1 && args[0].equals("list", ignoreCase = true)) {
             list(sender)
         } else if (args.size == 1 && args[0].equals("timers", ignoreCase = true)) {
             timers(sender)
@@ -32,18 +34,26 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
         } else if (args.size >= 1 && args[0].equals("settings", true)) {
             scenarioSettings(sender, args.drop(1))
         } else {
-            listEnabledScenarioDescriptions(sender)
+            false
+        }
+
+        if (!success) {
+            helpMessage(sender, label)
         }
 
         return true
     }
 
-    private fun listEnabledScenarioDescriptions(sender: CommandSender) {
+    private fun helpMessage(sender: CommandSender, alias: String) {
+        sender.sendMessage(Messages.SCENARIO_MANAGER_HELP, alias)
+    }
+
+    private fun listEnabledScenarioDescriptions(sender: CommandSender): Boolean {
         val scenarios = scenarioManager.scenarios.filter { it.isEnabled }
 
         if (scenarios.isEmpty()) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.NO_SCENARIOS_ENABLED))
-            return
+            return true
         }
 
         for (scenario in scenarios) {
@@ -51,9 +61,11 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
             val authorsText = if (authors == null || authors.isEmpty()) "anonymous" else authors.toList().format()
             sender.sendMessage(Messages.DESCRIBE_SCENARIO, scenario.name, scenario.description, authorsText)
         }
+
+        return true
     }
 
-    private fun list(sender: CommandSender) {
+    private fun list(sender: CommandSender): Boolean {
         val enabled = scenarioManager.scenarios.filter { it.isEnabled }.map { it.name }.format()
         val disabled = scenarioManager.scenarios.filterNot { it.isEnabled }.map { it.name }.format()
 
@@ -63,47 +75,55 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
             if (!enabled.isEmpty()) sender.sendMessage(Messages.ENABLED_SCENARIOS, enabled)
             if (!disabled.isEmpty()) sender.sendMessage(Messages.DISABLED_SCENARIOS, disabled)
         }
+
+        return true
     }
 
-    private fun enable(sender: CommandSender, scenarioName: String) {
+    private fun enable(sender: CommandSender, scenarioName: String): Boolean {
         val scenario = scenarioManager.getScenario(scenarioName)
 
         if (scenario == null) {
             sender.sendMessage(Messages.NOT_A_SCENARIO, scenarioName)
-            return
+            return true
         }
 
         scenario.isEnabled = true
         sender.sendMessage(Messages.SCENARIO_ENABLED, scenario.name)
+
+        return true
     }
 
-    private fun disable(sender: CommandSender, scenarioName: String) {
+    private fun disable(sender: CommandSender, scenarioName: String): Boolean {
         val scenario = scenarioManager.getScenario(scenarioName)
 
         if (scenario == null) {
             sender.sendMessage(Messages.NOT_A_SCENARIO, scenarioName)
-            return
+            return true
         }
 
         scenario.isEnabled = false
         sender.sendMessage(Messages.SCENARIO_DISABLED, scenario.name)
+
+        return true
     }
 
-    private fun describe(sender: CommandSender, scenarioName: String) {
+    private fun describe(sender: CommandSender, scenarioName: String): Boolean {
         val scenario = scenarioManager.getScenario(scenarioName)
 
         if (scenario == null) {
             sender.sendMessage(Messages.NOT_A_SCENARIO, scenarioName)
-            return
+            return true
         }
 
         val authors = scenario.authors
         val authorsText = if (authors == null || authors.isEmpty()) "anonymous" else authors.toList().format()
 
         sender.sendMessage(Messages.DESCRIBE_SCENARIO, scenario.name, scenario.description, authorsText)
+
+        return true
     }
 
-    private fun timers(sender: CommandSender) {
+    private fun timers(sender: CommandSender): Boolean {
         val events = scenarioManager.eventScheduler.events
 
         if (events.isEmpty())
@@ -113,13 +133,15 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
                 .filterNot { it.first.hide }
                 .sortedBy { it.second }
                 .forEach { (event, ticks) -> sender.sendMessage(Messages.TIMER, event.name, ScenarioManagerUtils.formatTicks(ticks)) }
+
+        return true
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun scenarioSettings(sender: CommandSender, args: List<String>) {
+    private fun scenarioSettings(sender: CommandSender, args: List<String>): Boolean {
         if (args.isEmpty()) {
             listScenarioSettings(sender)
-            return
+            return true
         }
 
         val scenarioNameArgs = ArrayList<String>()
@@ -135,7 +157,7 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
 
         if (scenario == null) {
             sender.sendMessage(Messages.NOT_A_SCENARIO, scenarioName)
-            return
+            return true
         }
 
         // Below this could be better :|
@@ -143,24 +165,37 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
 
         if (remainingArgs.isEmpty()) {
             listSettingsForScenario(sender, scenario)
-            return
+            return true
         }
 
         if (remainingArgs.size == 3 && !remainingArgs.first().equals("set", true)) {
-            // TODO: send help message
-            return
+            return false
         } else {
             remainingArgs = remainingArgs.drop(1)
+        }
+
+        if (remainingArgs.isEmpty()) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.SPECIFY_SETTING))
+            return true
         }
 
         val settingName = remainingArgs[0]
         val setting = scenario.settings?.firstOrNull { it.name.equals(settingName, true) } as? ScenarioSetting<Any>?
         if (setting == null) {
             sender.sendMessage(Messages.NOT_A_SETTING, settingName, scenario.name)
-            return
+            return true
         }
 
-        val settingValueStr = remainingArgs[1]
+        remainingArgs = remainingArgs.drop(1)
+
+        if (remainingArgs.isEmpty()) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.SPECIFY_SETTING_VALUE))
+            return true
+        } else if (remainingArgs.size > 1) {
+            return false
+        }
+
+        val settingValueStr = remainingArgs.first()
         val settingValue: Any
 
         try {
@@ -168,11 +203,12 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
         } catch (e: ScenarioSettingParseException) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.COULD_NOT_PARSE_SETTING_VALUE))
             log.log(Level.SEVERE, e.toString())
-            return
+            return true
         }
 
         setting.value = settingValue
         sender.sendMessage(Messages.SCENARIO_SETTING, setting.name, setting.displayValue())
+        return true
     }
 
     private fun listSettingsForScenario(sender: CommandSender, scenario: Scenario) {
@@ -217,7 +253,7 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): List<String> {
         if (args.size == 1) {
-            return listOf("list", "enable", "disable", "timers", "settings", "describe").minimizeTabCompletions(args.last())
+            return listOf("list", "enable", "disable", "timers", "settings", "describe", "help").minimizeTabCompletions(args.last())
         }
 
         if (args.size >= 2) {
