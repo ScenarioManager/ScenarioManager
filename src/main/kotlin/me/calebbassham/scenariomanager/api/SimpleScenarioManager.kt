@@ -61,7 +61,7 @@ open class SimpleScenarioManager(plugin: JavaPlugin) : ScenarioManager {
 
     inline fun <reified T> parseScenarioSetting(input: String): T = scenarioSettingParsers[T::class.java]?.parse(input) as T ?: throw ScenarioSettingParseException("no parser for class ${T::class.java.name}")
 
-    override fun getPrefix(scenario: Scenario) = ChatColor.translateAlternateColorCodes('&', "&8[&a${scenario.name}e&8]&7 ")
+    override fun getPrefix(scenario: Scenario) = ChatColor.translateAlternateColorCodes('&', "&8[&a${scenario.name}&8]&7 ")
 
     /**
      * @param name The name of the scenario to get, case sensitive.
