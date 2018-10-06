@@ -47,11 +47,13 @@ open class SimpleScenario : Scenario {
     override val settings: List<ScenarioSetting<*>>?
         get() = null
 
-    override var isEnabled = false
+    final override var isEnabled = false
         set(value) {
 
-            if(value && scenarioManager.gameProvider.isGameRunning() && this is Listener) {
-                Bukkit.getPluginManager().registerEvents(this, plugin)
+            if (value) {
+                if(scenarioManager.gameProvider.isGameRunning() && this is Listener) {
+                    Bukkit.getPluginManager().registerEvents(this, plugin)
+                }
             }
 
             if (!value) {
