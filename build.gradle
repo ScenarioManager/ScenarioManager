@@ -54,15 +54,22 @@ jar {
 
 shadowJar {
     relocate "kotlin", "me.calebbassham.scenariomanager.kotlin"
+    classifier = ""
     archiveName = "${baseName}.${extension}"
 }
 
 build.dependsOn shadowJar
 
+artifacts {
+    archives shadowJar
+}
+
+publish.dependsOn shadowJar
+
 publishing {
     publications {
         scenarioManager(MavenPublication) {
-            from components.java
+            shadow.component(it)
         }
     }
 
