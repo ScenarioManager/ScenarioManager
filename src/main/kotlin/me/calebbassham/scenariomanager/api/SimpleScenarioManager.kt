@@ -20,6 +20,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scoreboard.Scoreboard
+import java.util.concurrent.CompletableFuture
 
 open class SimpleScenarioManager(plugin: JavaPlugin) : ScenarioManager {
 
@@ -107,16 +108,16 @@ open class SimpleScenarioManager(plugin: JavaPlugin) : ScenarioManager {
      * @param onComplete A callback that should be called team assignment is done.
      * @throws MultipleTeamAssigningScenariosEnabledException
      */
-    fun onAssignTeams(players: Array<Player>, onComplete: Runnable) {
+    fun onAssignTeams(players: Array<Player>): CompletableFuture<Void> {
         val scens = scenarios.filter { it.isEnabled }.filterIsInstance(TeamAssigner::class.java)
 
-        if (scens.isEmpty()) return onComplete.run()
+        if (scens.isEmpty()) return CompletableFuture.completedFuture(Void.TYPE.newInstance())
 
         if (scens.size > 1) {
             throw MultipleTeamAssigningScenariosEnabledException()
         }
 
-        scens.first().onAssignTeams(teamProvider, players, onComplete)
+        return scens.first().onAssignTeams(teamProvider, players)
     }
 
     /**
