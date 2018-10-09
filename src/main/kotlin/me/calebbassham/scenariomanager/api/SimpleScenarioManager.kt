@@ -111,7 +111,7 @@ open class SimpleScenarioManager(plugin: JavaPlugin) : ScenarioManager {
     fun onAssignTeams(players: Array<Player>): CompletableFuture<Void> {
         val scens = scenarios.filter { it.isEnabled }.filterIsInstance(TeamAssigner::class.java)
 
-        if (scens.isEmpty()) return CompletableFuture.completedFuture(Void.TYPE.newInstance())
+        if (scens.isEmpty()) return CompletableFuture.completedFuture(null)
 
         if (scens.size > 1) {
             throw MultipleTeamAssigningScenariosEnabledException()
