@@ -29,6 +29,12 @@ internal object Messages {
     val SPECIFY_SETTING_VALUE = "$PREFIX You must specify a value for the setting."
     val SPECIFY_SETTING = "$PREFIX You must specify a setting."
     val NO_SCENARIOS_ENABLED = "$PREFIX There are no scenarios enabled."
+    val GENERATE_COMMAND_REMINDER = "$PREFIX Don't forget to run $HIGHLIGHT/{0} generate <world>"
+    val INVALID_WORLD = "$PREFIX $HIGHLIGHT{0} ${MAIN}is an invalid world."
+    val NO_WORLD_GENERATING_SCENARIOS_ENABLED = "$PREFIX No world generating scenarios are enabled."
+    val STARTED_SCENARIO_WORLD_UPDATES = "$PREFIX $HIGHLIGHT{0} ${MAIN}has started world updates."
+    val FINISHED_SCENARIO_WORLD_UPDATES = "$PREFIX $HIGHLIGHT{0} ${MAIN}has finished its world updates"
+    val ERROR_WHILE_RUNNING_WORLD_UPDATES = "$PREFIX Error while running world updates for $HIGHLIGHT{0}."
 
     val SCENARIO_MANAGER_HELP = listOf(
         "$PREFIX Scenario Manager Help",

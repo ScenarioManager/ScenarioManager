@@ -3,17 +3,21 @@ package me.calebbassham.scenariomanager.plugin.cmd
 import me.calebbassham.scenariomanager.ScenarioManagerUtils
 import me.calebbassham.scenariomanager.ScenarioManagerUtils.format
 import me.calebbassham.scenariomanager.api.Scenario
+import me.calebbassham.scenariomanager.api.WorldUpdater
 import me.calebbassham.scenariomanager.api.exceptions.ScenarioSettingParseException
 import me.calebbassham.scenariomanager.api.scenarioManager
 import me.calebbassham.scenariomanager.api.settings.ScenarioSetting
 import me.calebbassham.scenariomanager.plugin.Messages
 import me.calebbassham.scenariomanager.plugin.log
 import me.calebbassham.scenariomanager.plugin.sendMessage
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.World
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
+import java.util.function.BiConsumer
 import java.util.logging.Level
 
 class ScenarioManagerCmd : CommandExecutor, TabCompleter {
@@ -21,12 +25,16 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         val success: Boolean = if (args.isEmpty()) {
             listEnabledScenarioDescriptions(sender)
-        } else if (args.size == 1 && args[0].equals("list", ignoreCase = true)) {
+        } else if (args.size == 2 && args[0].equals("list", ignoreCase = true)) {
             list(sender)
         } else if (args.size == 1 && args[0].equals("timers", ignoreCase = true)) {
             timers(sender)
+        } else if (args.size == 2 && args[0].equals("generate", ignoreCase = true)) {
+            // sm generate <world>
+            // TODO - sm generate <world> [scenarios]
+            generate(sender, args.drop(1))
         } else if (args.size >= 2 && args[0].equals("enable", ignoreCase = true)) {
-            enable(sender, args.drop(1).joinToString(" "))
+            enable(sender, args.drop(1).joinToString(" "), label)
         } else if (args.size >= 2 && args[0].equals("disable", ignoreCase = true)) {
             disable(sender, args.drop(1).joinToString(" "))
         } else if (args.size >= 2 && args[0].equals("describe", ignoreCase = true)) {
@@ -42,6 +50,49 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
         }
 
         return true
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun generate(sender: CommandSender, args: List<String>): Boolean {
+
+        val world = Bukkit.getWorld(args[0])
+        if (world == null) {
+            sender.sendMessage(Messages.INVALID_WORLD, args[0])
+            return true
+        }
+
+        val scenarios = scenarioManager.scenarios
+            .filter { it.isEnabled }
+            .filterIsInstance<WorldUpdater>()
+
+        if (scenarios.isEmpty()) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.NO_WORLD_GENERATING_SCENARIOS_ENABLED))
+            return true
+        }
+
+        val firstScenario = scenarios.first()
+        firstScenario.generateWorld(world).whenComplete(generateNextScenario(sender, world, 0, scenarios as List<Scenario>))
+        sender.sendMessage(Messages.STARTED_SCENARIO_WORLD_UPDATES, (firstScenario as Scenario).name)
+
+        return true
+    }
+
+    private fun generateNextScenario(sender: CommandSender, world: World, currentScenarioIndex: Int, scenarios: List<Scenario>): BiConsumer<Void, Throwable> {
+        return BiConsumer { _, exception: Throwable? ->
+            val scenario = scenarios[currentScenarioIndex]
+
+            if (exception != null) {
+                sender.sendMessage(Messages.ERROR_WHILE_RUNNING_WORLD_UPDATES, scenario.name)
+            } else {
+                sender.sendMessage(Messages.FINISHED_SCENARIO_WORLD_UPDATES, scenario.name)
+            }
+
+            if (currentScenarioIndex < scenarios.lastIndex) {
+                val nextScenario = scenarios[currentScenarioIndex + 1]
+                (nextScenario as WorldUpdater).generateWorld(world).whenComplete(generateNextScenario(sender, world, currentScenarioIndex + 1, scenarios))
+                sender.sendMessage(Messages.STARTED_SCENARIO_WORLD_UPDATES, nextScenario.name)
+            }
+        }
     }
 
     private fun helpMessage(sender: CommandSender, alias: String) {
@@ -79,7 +130,7 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
         return true
     }
 
-    private fun enable(sender: CommandSender, scenarioName: String): Boolean {
+    private fun enable(sender: CommandSender, scenarioName: String, scenarioManagerCmdLabel: String): Boolean {
         val scenario = scenarioManager.getScenario(scenarioName)
 
         if (scenario == null) {
@@ -89,6 +140,10 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
 
         scenario.isEnabled = true
         sender.sendMessage(Messages.SCENARIO_ENABLED, scenario.name)
+
+        if (scenario is WorldUpdater) {
+            sender.sendMessage(Messages.GENERATE_COMMAND_REMINDER, scenarioManagerCmdLabel)
+        }
 
         return true
     }
@@ -253,10 +308,27 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): List<String> {
         if (args.size == 1) {
-            return listOf("list", "enable", "disable", "timers", "settings", "describe", "help").minimizeTabCompletions(args.last())
+            return listOf("list", "enable", "disable", "timers", "settings", "describe", "generate", "help").minimizeTabCompletions(args.last())
+        }
+
+        if (args.size == 2) {
+            return Bukkit.getWorlds().map { it.name }.minimizeTabCompletions(args.last())
         }
 
         if (args.size >= 2) {
+
+            if (args[0].equals("enable", true)) {
+                return scenarioManager.scenarios.filterNot { it.isEnabled }.tabCompleteScenarioName(args)
+            }
+
+            if (args[0].equals("disable", true)) {
+                return scenarioManager.scenarios.filter { it.isEnabled }.tabCompleteScenarioName(args)
+            }
+
+            if (args[0].equals("describe", true)) {
+                return scenarioManager.scenarios.tabCompleteScenarioName(args)
+            }
+
             if (args[0].equals("settings", true)) {
 
                 val scenarioNameArgs = ArrayList<String>()
@@ -276,21 +348,6 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
                     if (args.size == scenarioNameArgs.size + 3) return scenario.settings?.map { it.name } ?: emptyList()
                 }
             }
-        }
-
-        if (args.size >= 2) {
-
-            if (args[0].equals("enable", true)) {
-                return scenarioManager.scenarios.filterNot { it.isEnabled }.tabCompleteScenarioName(args)
-            }
-
-            if (args[0].equals("disable", true)) {
-                return scenarioManager.scenarios.tabCompleteScenarioName(args)
-            }
-
-            if (args[0].equals("describe", true)) {
-                return scenarioManager.scenarios.tabCompleteScenarioName(args)
-            }
 
         }
 
@@ -300,8 +357,10 @@ class ScenarioManagerCmd : CommandExecutor, TabCompleter {
     private fun List<String>.minimizeTabCompletions(arg: String): List<String> = this.filter { it.toLowerCase().startsWith(arg.toLowerCase()) }
 
     private fun Collection<Scenario>.tabCompleteScenarioName(args: Array<out String>, argsToDrop: Int = 1): List<String> = this
-        .filter { it.name.startsWith(args.drop(argsToDrop)
-        .joinToString(" ")) }
+        .filter {
+            it.name.startsWith(args.drop(argsToDrop)
+                .joinToString(" "))
+        }
         .map { it.name.split(" ") }
         .map { it.slice(args.size - 1 - argsToDrop..it.lastIndex) }
         .map { it.joinToString(" ") }.minimizeTabCompletions(args.last())
