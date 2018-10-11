@@ -6,22 +6,19 @@ buildscript {
 
     repositories {
         mavenCentral()
-        jcenter()
     }
 
     dependencies {
         classpath 'com.amazonaws:aws-java-sdk:1.11.5'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.0"
     }
 }
 
 group = 'me.calebbassham'
-version = '0.7.1'
+version = '0.8.0'
 
 apply plugin: 'kotlin'
 apply plugin: 'maven-publish'
-apply plugin: "com.github.johnrengelman.shadow"
 
 repositories {
     mavenCentral()
@@ -42,7 +39,7 @@ compileTestKotlin {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compileOnly("ch.njol:skript:2.2-dev37c")
     compileOnly "org.spigotmc:spigot-api:1.8-R0.1-SNAPSHOT"
 }
@@ -52,24 +49,10 @@ jar {
     archiveName = "${baseName}.${extension}"
 }
 
-shadowJar {
-    relocate "kotlin", "me.calebbassham.scenariomanager.kotlin"
-    classifier = ""
-    archiveName = "${baseName}.${extension}"
-}
-
-build.dependsOn shadowJar
-
-artifacts {
-    archives shadowJar
-}
-
-publish.dependsOn shadowJar
-
 publishing {
     publications {
         scenarioManager(MavenPublication) {
-            shadow.component(it)
+            from components.java
         }
     }
 

@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.scoreboard.Team
 import java.util.*
 
-class DefaultTeamProvider : TeamProvider {
+open class DefaultTeamProvider : TeamProvider {
 
     private val scoreboard
         get() = Bukkit.getScoreboardManager().mainScoreboard
