@@ -11,6 +11,6 @@ interface WorldUpdater {
     /**
      * Change the world.
      */
-    fun generateWorld(world: World): CompletableFuture<Void>
+    fun updateWorld(world: World): CompletableFuture<Void>
 
 }

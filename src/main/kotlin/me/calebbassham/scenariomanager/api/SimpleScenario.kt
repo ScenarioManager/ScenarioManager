@@ -4,7 +4,7 @@ import me.calebbassham.scenariomanager.ScenarioManagerUtils
 import me.calebbassham.scenariomanager.api.events.ScenarioEvent
 import me.calebbassham.scenariomanager.api.settings.ScenarioSetting
 import org.bukkit.Bukkit
-import org.bukkit.entity.Player
+import org.bukkit.command.CommandSender
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
@@ -87,15 +87,17 @@ open class SimpleScenario : Scenario {
      * @param msg The message to send to the player.
      */
     protected fun broadcast(msg: String) {
-        Bukkit.getOnlinePlayers().forEach { it.sendMessage("$prefix$msg") }
+        Bukkit.getOnlinePlayers().toList<CommandSender>()
+            .plus(Bukkit.getConsoleSender())
+            .forEach { it.sendMessage("$prefix$msg") }
     }
 
     /**
      * Send a message to a player with the scenario prefix.
-     * @param player The player to send the message to.
+     * @param player The [CommandSender] to send the message to.
      * @param msg The message to send to the player.
      */
-    protected fun sendMessage(player: Player, msg: String) {
+    protected fun sendMessage(player: CommandSender, msg: String) {
         player.sendMessage("$prefix$msg")
     }
 

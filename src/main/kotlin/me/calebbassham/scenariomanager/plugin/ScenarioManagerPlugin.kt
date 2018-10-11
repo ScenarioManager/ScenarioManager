@@ -17,7 +17,6 @@ import me.calebbassham.scenariomanager.api.skript.expression.ExprScenario
 import me.calebbassham.scenariomanager.api.skript.expression.ExprScenarioDescription
 import me.calebbassham.scenariomanager.api.skript.expression.ExprScenarioName
 import me.calebbassham.scenariomanager.api.skript.type.ScenarioClassInfo
-import me.calebbassham.scenariomanager.plugin.cmd.ScenarioManagerCmd
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
@@ -45,12 +44,6 @@ class ScenarioManagerPlugin : JavaPlugin() {
 
         if (Bukkit.getPluginManager().getPlugin("Skript") != null) {
             skript()
-        }
-
-        Bukkit.getPluginCommand("scenariomanager").apply {
-            val cmd = ScenarioManagerCmd()
-            executor = cmd
-            tabCompleter = cmd
         }
 
     }

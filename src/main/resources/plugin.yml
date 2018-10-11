@@ -3,8 +3,3 @@ main: me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
 version: 0.6.2
 author: Caleb Bassham
 soft-depend: [Skript]
-
-commands:
-  scenariomanager:
-    aliases: [scen, sm]
-    usage: /<command> help

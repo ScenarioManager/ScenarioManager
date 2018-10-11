@@ -1,3 +1,6 @@
 package me.calebbassham.scenariomanager.api.uhc
 
-class DefaultGameProvider : GameProvider
+open class DefaultGameProvider : GameProvider {
+
+    override fun isGameRunning() = true
+}
