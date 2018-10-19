@@ -50,6 +50,25 @@ This is not currently supported in the skript addon.
 
 No docs yet but it is basically the same as java. Just know how your language does interoperability with Java. Note, in Kotlin the ScenarioManager instance is accessed with just `scenarioManager` instead of `ScenarioManagerInstance.getScenarioManager()`.
 
+## Verified Scenarios
+
+Below is a list of verified scenario. When a scenario is verified, it means a few things:
+
+1. It is going to work.
+2. All features have been tested by the creator in real games. The number of games the scenario is tested depends on the complexity of the scenario.
+3. It supports being enabled or disabled in the middle of a game.
+
+What it does **not** mean:
+
+1. It is going to work with *all other* scenarios. If two scenarios seem like they may have conflicts, you should defiantly test the combination together before hosing a public match.
+2. The configuration settings can be changed while a game is running and work.
+
+In order to have your scenario added as a verified scenario, [edit this file](https://gitlab.com/CalebBassham/ScenarioManager/edit/readme/README.md) and add your scenario to the list. Make the commit message `Add <scenario name> as a verified scenario`. Make the target branch `verify-scenario/<scenario name>`. Create merge request with the changes. The merge request must include the name of the scenario, the description of the scenario, a YouTube video of the scenario working in a UHC. If one video cannot show all of the features of the scenario, make multiple. If the video is not edited down to include only the relevant parts, include timestamps with short descriptions of what is being shown.
+
+---
+
+**Cut Clean**: *All ores and food are dropped in their smelted variety.* [Plugin] [[Repository](https://gitlab.com/CalebBassham/cutclean)]
+
 ## *Do you need help?*
 
 If you are having issues with setting up the scenario manager with your server, writing new scenarios for this scenario manager, or converting your scenarios to work with this scenario manager, feel free to message me on discord. My username is `DarkPaladin#0309`. You can also find me on the Reddit UHC discord. If you have found a bug with the scenario manager, please open a new issue, describe the problem in as much detail as possible, and include any error messages from the console. If you do not want to create an account, you can alternatively send an email to [incoming+CalebBassham/ScenarioManager@incoming.gitlab.com][service desk]. If you have found a problem with a specific scenario, please open an issue on their respective repositories. Do not report issues with specific scenarios using this scenario manager here!
