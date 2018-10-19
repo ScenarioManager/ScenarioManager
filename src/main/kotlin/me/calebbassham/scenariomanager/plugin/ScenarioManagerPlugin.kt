@@ -2,15 +2,13 @@ package me.calebbassham.scenariomanager.plugin
 
 import ch.njol.skript.Skript
 import ch.njol.skript.SkriptAddon
-import ch.njol.skript.command.Commands.registerCommand
 import ch.njol.skript.lang.ExpressionType
 import ch.njol.skript.registrations.Classes
 import ch.njol.skript.registrations.EventValues
 import ch.njol.skript.util.Getter
-import co.aikar.commands.InvalidCommandArgument
-import co.aikar.commands.PaperCommandManager
 import me.calebbassham.scenariomanager.api.Scenario
-import me.calebbassham.scenariomanager.api.ScenarioManager
+import me.calebbassham.scenariomanager.api.SimpleScenarioManager
+import me.calebbassham.scenariomanager.api.nullableScenarioManager
 import me.calebbassham.scenariomanager.api.skript.condition.CondScenario
 import me.calebbassham.scenariomanager.api.skript.condition.CondScenarioRegistered
 import me.calebbassham.scenariomanager.api.skript.effect.*
@@ -19,7 +17,6 @@ import me.calebbassham.scenariomanager.api.skript.expression.ExprScenario
 import me.calebbassham.scenariomanager.api.skript.expression.ExprScenarioDescription
 import me.calebbassham.scenariomanager.api.skript.expression.ExprScenarioName
 import me.calebbassham.scenariomanager.api.skript.type.ScenarioClassInfo
-import me.calebbassham.scenariomanager.plugin.cmd.ScenarioManagerCmd
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
@@ -31,10 +28,6 @@ class ScenarioManagerPlugin : JavaPlugin() {
 
     companion object {
         internal lateinit var instance: ScenarioManagerPlugin
-
-        @JvmStatic
-        var scenarioManager: ScenarioManager? = null
-            private set
     }
 
     internal var skriptAddon: SkriptAddon? = null
@@ -45,7 +38,7 @@ class ScenarioManagerPlugin : JavaPlugin() {
             log = this.logger
         }
 
-        scenarioManager = ScenarioManager(this)
+        nullableScenarioManager = SimpleScenarioManager(this)
 
         instance = this
 
@@ -53,27 +46,6 @@ class ScenarioManagerPlugin : JavaPlugin() {
             skript()
         }
 
-        PaperCommandManager(this).apply {
-            commandContexts.registerContext(Scenario::class.java, {
-                val scenName = it.popFirstArg().replace("_", " ")
-                return@registerContext scenarioManager?.getScenario(scenName)
-                        ?: throw InvalidCommandArgument(String.format(Messages.NOT_A_SCENARIO, scenName), false)
-            })
-
-            commandCompletions.registerCompletion("scenarios", {
-                scenarioManager?.registeredScenarios?.map { it.name.replace(" ", "_") }
-            })
-
-            commandCompletions.registerCompletion("enabledScenarios", {
-                scenarioManager?.enabledScenarios?.map { it.name.replace(" ", "_") }
-            })
-
-            commandCompletions.registerCompletion("disabledScenarios", {
-                scenarioManager?.registeredScenarios?.filterNot { it.isEnabled }?.map { it.name.replace(" ", "_") }
-            })
-
-            registerCommand(ScenarioManagerCmd())
-        }
     }
 
     private fun skript() {
@@ -99,7 +71,7 @@ class ScenarioManagerPlugin : JavaPlugin() {
         Skript.registerEffect(EffTriggerGameStartEvent::class.java, "trigger game start event with %players%")
         Skript.registerEffect(EffTriggerGameStopEvent::class.java, "trigger game stop event")
         Skript.registerEffect(EffTriggerPlayerStartEvent::class.java, "trigger player start event with %player%")
-        Skript.registerEffect(EffScheduleScenarioEvent::class.java, "schedule scenario event [with name ]%string% to run in %timespan%[ and hide]")
+        Skript.registerEffect(EffScheduleScenarioEvent::class.java, "schedule scenario event for %scenario% [with name ]%string% to run in %timespan%[ and hide]")
 
         Skript.registerExpression(ExprScenario::class.java, Scenario::class.java, ExpressionType.COMBINED, "[the] scenario [with name ]%string%")
         Skript.registerExpression(ExprScenarioDescription::class.java, String::class.java, ExpressionType.COMBINED, "[the] description of %scenario%", "%scenario%'s description")

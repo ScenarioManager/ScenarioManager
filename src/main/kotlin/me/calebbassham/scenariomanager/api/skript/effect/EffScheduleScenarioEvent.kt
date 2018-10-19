@@ -5,14 +5,16 @@ import ch.njol.skript.lang.Expression
 import ch.njol.skript.lang.SkriptParser
 import ch.njol.skript.util.Timespan
 import ch.njol.util.Kleenean
-import me.calebbassham.scenariomanager.api.ScenarioEvent
+import me.calebbassham.scenariomanager.api.Scenario
+import me.calebbassham.scenariomanager.api.events.ScenarioEvent
+import me.calebbassham.scenariomanager.api.scenarioManager
 import me.calebbassham.scenariomanager.api.skript.event.SkriptScenarioEventTriggerEvent
-import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
 import org.bukkit.Bukkit
 import org.bukkit.event.Event
 
 class EffScheduleScenarioEvent : Effect() {
 
+    private var scenario: Expression<Scenario>? = null
     private var name: Expression<String>? = null
     private var ticks: Expression<Timespan>? = null
     private var hide: Boolean? = null
@@ -28,8 +30,9 @@ class EffScheduleScenarioEvent : Effect() {
     override fun execute(e: Event?) {
         val name = name?.getSingle(e) ?: return
         val ticks = ticks?.getSingle(e)?.ticks_i ?: return
+        val scenario = scenario?.getSingle(e) ?: return
 
-        ScenarioManagerPlugin.scenarioManager?.eventScheduler?.scheduleEvent(object : ScenarioEvent(name, hide == true) {
+        scenarioManager?.eventScheduler?.scheduleEvent(scenario, object : ScenarioEvent(name, hide == true) {
             override fun run() {
                 Bukkit.getPluginManager().callEvent(SkriptScenarioEventTriggerEvent(name))
             }

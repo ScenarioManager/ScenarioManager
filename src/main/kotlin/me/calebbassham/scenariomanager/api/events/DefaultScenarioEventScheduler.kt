@@ -1,29 +1,45 @@
-package me.calebbassham.scenariomanager.api
+package me.calebbassham.scenariomanager.api.events
 
+import me.calebbassham.scenariomanager.api.Scenario
+import me.calebbassham.scenariomanager.api.exceptions.TimerNotRunning
+import me.calebbassham.scenariomanager.api.exceptions.TimerRunning
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 
 internal class DefaultScenarioEventScheduler(private val plugin: JavaPlugin) : ScenarioEventScheduler {
 
     override val events = HashMap<ScenarioEvent, Long>()
+    private var ticks: Long = 0
     private var timer: Timer? = null
 
-    override fun scheduleEvent(event: ScenarioEvent, ticks: Long) {
-        events[event] = ticks
+    override fun scheduleEvent(scenario: Scenario, event: ScenarioEvent, ticks: Long, fromStartOfGame: Boolean) {
+        event.scenario = scenario
+        events[event] = if (fromStartOfGame) ticks - this.ticks else ticks
+    }
+
+    override fun removeScheduledEvents(scenario: Scenario) {
+        val iter = events.iterator()
+        while(iter.hasNext()) {
+            val event = iter.next().key
+            if (event.scenario == scenario) {
+                iter.remove()
+            }
+        }
     }
 
     private inner class Timer : BukkitRunnable() {
 
         override fun run() {
-
             for ((event, triggerTicks) in events) {
-                if (triggerTicks <= 0) {
+                val ticksRemaining = triggerTicks - ticks
+                event.onTick(ticksRemaining)
+                if (ticksRemaining <= 0) {
                     events.remove(event)
                     event.run()
-                } else{
-                    events[event] = triggerTicks - 1
                 }
             }
+
+            ticks++
         }
 
     }

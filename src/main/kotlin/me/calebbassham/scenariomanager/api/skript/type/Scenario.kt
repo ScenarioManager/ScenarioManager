@@ -4,7 +4,7 @@ import ch.njol.skript.classes.ClassInfo
 import ch.njol.skript.classes.Parser
 import ch.njol.skript.lang.ParseContext
 import me.calebbassham.scenariomanager.api.Scenario
-import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
+import me.calebbassham.scenariomanager.api.scenarioManager
 
 class ScenarioClassInfo : ClassInfo<Scenario>(Scenario::class.java, "scenario") {
 
@@ -23,6 +23,6 @@ class ScenarioParser : Parser<Scenario>() {
 
     override fun toVariableNameString(scen: Scenario) = scen.name
 
-    override fun parse(s: String, context: ParseContext?) = ScenarioManagerPlugin.scenarioManager?.getScenario(s)
+    override fun parse(s: String, context: ParseContext?) = scenarioManager.getScenario(s)
 
 }

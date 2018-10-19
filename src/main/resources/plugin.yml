@@ -1,5 +1,5 @@
 name: ScenarioManager
 main: me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
-version: 0.2.2
+version: 0.6.2
 author: Caleb Bassham
 soft-depend: [Skript]

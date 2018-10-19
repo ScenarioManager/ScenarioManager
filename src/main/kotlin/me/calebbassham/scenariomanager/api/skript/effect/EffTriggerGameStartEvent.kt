@@ -4,7 +4,7 @@ import ch.njol.skript.lang.Effect
 import ch.njol.skript.lang.Expression
 import ch.njol.skript.lang.SkriptParser
 import ch.njol.util.Kleenean
-import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
+import me.calebbassham.scenariomanager.api.scenarioManager
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 
@@ -19,7 +19,7 @@ class EffTriggerGameStartEvent : Effect() {
     }
 
     override fun execute(e: Event?) {
-        ScenarioManagerPlugin.scenarioManager?.onGameStart(players?.getAll(e) ?: emptyArray())
+        scenarioManager.onGameStart(players?.getAll(e) ?: emptyArray())
     }
 
     override fun toString(p0: Event?, p1: Boolean) = "Trigger Game Start Event"
