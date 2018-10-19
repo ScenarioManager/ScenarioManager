@@ -63,7 +63,7 @@ What it does **not** mean:
 1. It is going to work with *all other* scenarios. If two scenarios seem like they may have conflicts, you should defiantly test the combination together before hosing a public match.
 2. The configuration settings can be changed while a game is running and work.
 
-In order to have your scenario added as a verified scenario, [edit this file](https://gitlab.com/CalebBassham/ScenarioManager/edit/readme/README.md) and add your scenario to the list alphabetically. Make the commit message `Add <scenario name> as a verified scenario`. Make the target branch `verify-scenario/<scenario name>`. Create merge request with the changes. The merge request must include the name of the scenario, the description of the scenario, a YouTube video of the scenario working in a UHC. If one video cannot show all of the features of the scenario, make multiple. If the video is not edited down to include only the relevant parts, include timestamps with short descriptions of what is being shown.
+In order to have your scenario added as a verified scenario, [edit this file][edit readme] and add your scenario to the list alphabetically. Make the commit message `Add <scenario name> as a verified scenario`. Make the target branch `verify-scenario/<scenario name>`. Create merge request with the changes. The merge request must include the name of the scenario, the description of the scenario, a YouTube video of the scenario working in a UHC. If one video cannot show all of the features of the scenario, make multiple. If the video is not edited down to include only the relevant parts, include timestamps with short descriptions of what is being shown.
 
 ---
 
@@ -73,5 +73,6 @@ In order to have your scenario added as a verified scenario, [edit this file](ht
 
 If you are having issues with setting up the scenario manager with your server, writing new scenarios for this scenario manager, or converting your scenarios to work with this scenario manager, feel free to message me on discord. My username is `DarkPaladin#0309`. You can also find me on the Reddit UHC discord. If you have found a bug with the scenario manager, please open a new issue, describe the problem in as much detail as possible, and include any error messages from the console. If you do not want to create an account, you can alternatively send an email to [incoming+CalebBassham/ScenarioManager@incoming.gitlab.com][service desk]. If you have found a problem with a specific scenario, please open an issue on their respective repositories. Do not report issues with specific scenarios using this scenario manager here!
 
+[edit readme]: https://gitlab.com/CalebBassham/ScenarioManager/edit/readme/README.md?commit_message=Add%20<scenario%20name>%20as%20a%20verified%20scenario
 [service desk]: mailto:incoming+CalebBassham/ScenarioManager@incoming.gitlab.com
 [download latest]: https://gitlab.com/CalebBassham/ScenarioManager/-/jobs/artifacts/master/raw/build/libs/ScenarioManager.jar?job=package
