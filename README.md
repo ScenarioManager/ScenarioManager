@@ -17,8 +17,14 @@ Scenarios can have configs. Every scenario's config can be edited in game. Unlik
 
 This scenario manager has support for multiple types of scenarios. It supports your standard scenarios (Cut Clean, Hastey Boys, Sky High, etc), team assigning scenarios (Red vs Blue, Sky High, etc), and world updating scenarios (Big Crack, etc).
 
+## Installation
+
+1. Download the latest version [here][download latest].
+2. Move the downloaded jar to the `plugins` directory of your server.
+
 ## *I Need Help!*
 
 If you are having issues with setting up the scenario manager with your server, writing new scenarios for this scenario manager, or converting your scenarios to work with this scenario manager, feel free to message me on discord. My username is `DarkPaladin#0309`. You can also find me on the Reddit UHC discord. If you have found a bug with the scenario manager, please open a new issue, describe the problem in as much detail as possible, and include any error messages from the console. If you do not want to create an account, you can alternatively send an email to [incoming+CalebBassham/ScenarioManager@incoming.gitlab.com][service desk]. If a have found a problem with a specific scenario, please open an issue on their respective repositories. Do not report issues with specific scenarios using this scenario manager here!
 
 [service desk]: mailto:incoming+CalebBassham/ScenarioManager@incoming.gitlab.com
+[download latest]: https://gitlab.com/CalebBassham/ScenarioManager/-/jobs/artifacts/master/raw/build/libs/ScenarioManager.jar?job=package

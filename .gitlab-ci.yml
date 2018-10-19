@@ -8,6 +8,5 @@ jar:
   script:
     - ./gradlew build --configure-on-demand --no-daemon --parallel
   artifacts:
-    expire_in: 1 week
     paths:
       - build/libs/*.jar
