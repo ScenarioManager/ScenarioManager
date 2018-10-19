@@ -67,7 +67,7 @@ In order to have your scenario added as a verified scenario, [edit this file](ht
 
 ---
 
-**Cut Clean**: *All ores and food are dropped in their smelted variety.* [Plugin] [[Repository](https://gitlab.com/CalebBassham/cutclean)]
+[PL] **Cut Clean**: *All ores and food are dropped in their smelted variety.* [[Repository](https://gitlab.com/CalebBassham/cutclean)]
 
 ## *Do you need help?*
 
