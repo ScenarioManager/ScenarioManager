@@ -50,7 +50,7 @@ This is not currently supported in the skript addon.
 
 No docs yet but it is basically the same as java. Just know how your language does interoperability with Java. Note, in Kotlin the ScenarioManager instance is accessed with just `scenarioManager` instead of `ScenarioManagerInstance.getScenarioManager()`.
 
-## *I Need Help!*
+## *Do you need help?*
 
 If you are having issues with setting up the scenario manager with your server, writing new scenarios for this scenario manager, or converting your scenarios to work with this scenario manager, feel free to message me on discord. My username is `DarkPaladin#0309`. You can also find me on the Reddit UHC discord. If you have found a bug with the scenario manager, please open a new issue, describe the problem in as much detail as possible, and include any error messages from the console. If you do not want to create an account, you can alternatively send an email to [incoming+CalebBassham/ScenarioManager@incoming.gitlab.com][service desk]. If you have found a problem with a specific scenario, please open an issue on their respective repositories. Do not report issues with specific scenarios using this scenario manager here!
 
