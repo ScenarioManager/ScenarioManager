@@ -21,7 +21,9 @@ This scenario manager has support for multiple types of scenarios. It supports y
 
 1. Download the latest version [here][download latest].
 2. Move the downloaded jar to the `plugins` directory of your server.
-3. Read and complete the necessary steps in server integration. 
+3. *(recommended)* Install the scenario manager commands plugin; instructions can be found [here](#). If you do not install this plugin, you will need to install another plugin/skript to interact with the scenario manager or make your own.
+4. *(optional)* Install the ScenarioManagerSk plugin; instructions can be found [here](#). If you do not install this plugin, you will not be able to install scenarios written in skript. 
+5. Read and complete the necessary steps in server integration.
 
 ## Server Integration
 
