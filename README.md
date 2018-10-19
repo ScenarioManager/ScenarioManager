@@ -17,6 +17,10 @@ Scenarios can have configs. Every scenario's config can be edited in game. Unlik
 
 This scenario manager has support for multiple types of scenarios. It supports your standard scenarios (Cut Clean, Hastey Boys, Sky High, etc), team assigning scenarios (Red vs Blue, Sky High, etc), and world updating scenarios (Big Crack, etc).
 
+## Video Tutorial
+
+I would like to include a video guide on how to add this to a server with skript. If anyone has a server and they would like to go through the installation and integration of this plugin on the server with me, send me a message on  discord so we can make it happen. my discord username is `DarkPaladin#0309`. This message will be removed as soon as I find someone to do this with.
+
 ## Installation
 
 1. Download the latest version [here][download latest].
