@@ -21,6 +21,28 @@ This scenario manager has support for multiple types of scenarios. It supports y
 
 1. Download the latest version [here][download latest].
 2. Move the downloaded jar to the `plugins` directory of your server.
+3. Read and complete the necessary steps in server integration. 
+
+## Server Integration
+
+While I try to keep the amount of work to set this up at a minimum, there are a few things
+that should be done to greatly improve the experience of using this scenario manager. This should be done in a separate plugin/skript than any scenario.
+
+### Java
+
+1. Get the instance of the scenario manager with `ScenarioManagerInstace.getScenarioManager()`
+1. GameWorldProvider
+2. GamePlayerProvider
+3. GameProvider
+4. TeamProvider
+
+### Skript
+
+This is not currently supported in the skript addon.
+
+### Kotlin/Scala
+
+No docs yet but it is basically the same as java. Just know how your language does interoperability with Java. Note, in Kotlin the ScenarioManager instance is accessed with just `scenarioManager` instead of `ScenarioManagerInstance.getScenarioManager()`.
 
 ## *I Need Help!*
 
