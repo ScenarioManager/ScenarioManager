@@ -63,7 +63,7 @@ What it does **not** mean:
 1. It is going to work with *all other* scenarios. If two scenarios seem like they may have conflicts, you should defiantly test the combination together before hosing a public match.
 2. The configuration settings can be changed while a game is running and work.
 
-In order to have your scenario added as a verified scenario, [edit this file](https://gitlab.com/CalebBassham/ScenarioManager/edit/readme/README.md) and add your scenario to the list. Make the commit message `Add <scenario name> as a verified scenario`. Make the target branch `verify-scenario/<scenario name>`. Create merge request with the changes. The merge request must include the name of the scenario, the description of the scenario, a YouTube video of the scenario working in a UHC. If one video cannot show all of the features of the scenario, make multiple. If the video is not edited down to include only the relevant parts, include timestamps with short descriptions of what is being shown.
+In order to have your scenario added as a verified scenario, [edit this file](https://gitlab.com/CalebBassham/ScenarioManager/edit/readme/README.md) and add your scenario to the list alphabetically. Make the commit message `Add <scenario name> as a verified scenario`. Make the target branch `verify-scenario/<scenario name>`. Create merge request with the changes. The merge request must include the name of the scenario, the description of the scenario, a YouTube video of the scenario working in a UHC. If one video cannot show all of the features of the scenario, make multiple. If the video is not edited down to include only the relevant parts, include timestamps with short descriptions of what is being shown.
 
 ---
 
