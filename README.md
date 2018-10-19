@@ -68,6 +68,7 @@ In order to have your scenario added as a verified scenario, [edit this file][ed
 ---
 
 [PL] **Cut Clean**: *All ores and food are dropped in their smelted variety.* [[Repository](https://gitlab.com/CalebBassham/cutclean)]
+
 [PL] [1.13+] **Time Bomb**: *When a player dies, their items will be placed in a chest that explodes after 30 seconds.* [[Repository](https://gitlab.com/CalebBassham/timebomb)]
 
 ## *Do you need help?*
