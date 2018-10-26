@@ -5,7 +5,10 @@ import me.calebbassham.scenariomanager.api.events.ScenarioEventScheduler
 import me.calebbassham.scenariomanager.api.exceptions.MultipleTeamAssigningScenariosEnabledException
 import me.calebbassham.scenariomanager.api.exceptions.ScenarioSettingParseException
 import me.calebbassham.scenariomanager.api.settings.ScenarioSettingParser
+import me.calebbassham.scenariomanager.api.settings.onlineplayer.OnlinePlayer
 import me.calebbassham.scenariomanager.api.settings.parsers.IntParser
+import me.calebbassham.scenariomanager.api.settings.parsers.OnlinePlayerArrayParser
+import me.calebbassham.scenariomanager.api.settings.parsers.OnlinePlayerParser
 import me.calebbassham.scenariomanager.api.settings.parsers.TimeSpanParser
 import me.calebbassham.scenariomanager.api.settings.timespan.TimeSpan
 import me.calebbassham.scenariomanager.api.skript.event.GameStartEvent
@@ -62,9 +65,12 @@ open class SimpleScenarioManager(plugin: JavaPlugin) : ScenarioManager {
         put(TimeSpan::class.java, TimeSpanParser())
         put(Int::class.java, IntParser())
         put(java.lang.Integer::class.java, IntParser())
+        put(OnlinePlayer::class.java, OnlinePlayerParser())
+        put(Array<OnlinePlayer>::class.java, OnlinePlayerArrayParser())
     }
 
-    inline fun <reified T> parseScenarioSetting(input: String): T = scenarioSettingParsers[T::class.java]?.parse(input) as T ?: throw ScenarioSettingParseException("no parser for class ${T::class.java.name}")
+    inline fun <reified T> parseScenarioSetting(input: String): T =
+        scenarioSettingParsers[T::class.java]?.parse(input) as T ?: throw ScenarioSettingParseException("no parser for class ${T::class.java.name}")
 
     override fun getPrefix(scenario: Scenario) = ChatColor.translateAlternateColorCodes('&', "&8[&a${scenario.name}&8]&7 ")
 

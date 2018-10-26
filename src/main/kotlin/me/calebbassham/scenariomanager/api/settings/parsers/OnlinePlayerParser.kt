@@ -7,3 +7,8 @@ import org.bukkit.Bukkit
 class OnlinePlayerParser : ScenarioSettingParser<OnlinePlayer> {
     override fun parse(input: String) = OnlinePlayer(Bukkit.getPlayer(input))
 }
+
+class OnlinePlayerArrayParser : ScenarioSettingParser<Array<OnlinePlayer>> {
+    override fun parse(input: String): Array<OnlinePlayer> =
+        input.split(",").map { OnlinePlayer(Bukkit.getPlayer(input)) }.toTypedArray()
+}
