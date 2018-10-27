@@ -92,4 +92,24 @@ object ScenarioManagerUtils {
         return list.joinToString(" ")
     }
 
+    internal fun <E> formatList(collection: Collection<E>): String {
+        val list = collection.toList()
+
+        val sb = StringBuilder()
+
+        for (i in 0 until list.size) {
+            sb.append(list[i])
+
+            if (i == list.size - 1) {
+                continue
+            } else if (i == list.size - 2) {
+                sb.append(" & ")
+            } else {
+                sb.append(", ")
+            }
+        }
+
+        return sb.toString()
+    }
+
 }
