@@ -10,5 +10,5 @@ class OnlinePlayerParser : ScenarioSettingParser<OnlinePlayer> {
 
 class OnlinePlayerArrayParser : ScenarioSettingParser<Array<OnlinePlayer>> {
     override fun parse(input: String): Array<OnlinePlayer> =
-        input.split(",").map { OnlinePlayer(Bukkit.getPlayer(input)) }.toTypedArray()
+        input.split(",").map { OnlinePlayer(Bukkit.getPlayer(it)) }.toTypedArray()
 }
