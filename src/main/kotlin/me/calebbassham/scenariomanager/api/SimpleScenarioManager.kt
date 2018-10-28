@@ -16,7 +16,6 @@ import me.calebbassham.scenariomanager.api.skript.event.GameStopEvent
 import me.calebbassham.scenariomanager.api.skript.event.PlayerStartEvent
 import me.calebbassham.scenariomanager.api.uhc.*
 import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
-import me.calebbassham.scenariomanager.plugin.log
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
@@ -89,8 +88,6 @@ open class SimpleScenarioManager(plugin: JavaPlugin) : ScenarioManager {
      * @param players The players that are playing the game. [Scenario.onPlayerStart] will be called with all of the players.
      */
     fun onGameStart(players: Array<Player>) {
-        log.info("started with ${players.joinToString(", ")}")
-
         (eventScheduler as? DefaultScenarioEventScheduler)?.startTimer()
 
         scenarios.filter { it.isEnabled }.forEach { scenario ->
