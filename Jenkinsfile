@@ -1,5 +1,5 @@
 pipeline {
-    agent { node { label 'build executor' } }
+    agent { node { label 'gradle' } }
     
     options {
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
