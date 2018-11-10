@@ -67,14 +67,13 @@ In order to have your scenario added as a verified scenario, [edit this file][ed
 
 ---
 
-[PL] **Cut Clean**: *All ores and food are dropped in their smelted variety.* [[Repository](https://gitlab.com/CalebBassham/cutclean)]
+[PL] **Cut Clean**: *All ores and food are dropped in their smelted variety.* [[Repository](https://github.com/ScenarioManager/CutClean)]
 
-[PL] [1.13+] **Time Bomb**: *When a player dies, their items will be placed in a chest that explodes after 30 seconds.* [[Repository](https://gitlab.com/CalebBassham/timebomb)]
+[PL] [1.13+] **Time Bomb**: *When a player dies, their items will be placed in a chest that explodes after 30 seconds.* [[Repository](https://github.com/ScenarioManager/TimeBomb)]
 
 ## *Do you need help?*
 
-If you are having issues with setting up the scenario manager with your server, writing new scenarios for this scenario manager, or converting your scenarios to work with this scenario manager, feel free to message me on discord. My username is `DarkPaladin#0309`. You can also find me on the Reddit UHC discord. If you have found a bug with the scenario manager, please open a new issue, describe the problem in as much detail as possible, and include any error messages from the console. If you do not want to create an account, you can alternatively send an email to [incoming+CalebBassham/ScenarioManager@incoming.gitlab.com][service desk]. If you have found a problem with a specific scenario, please open an issue on their respective repositories. Do not report issues with specific scenarios using this scenario manager here!
+If you are having issues with setting up the scenario manager with your server, writing new scenarios for this scenario manager, or converting your scenarios to work with this scenario manager, feel free to message me on discord. My username is `DarkPaladin#0309`. You can also find me on the Reddit UHC discord. If you have found a bug with the scenario manager, please open a new issue, describe the problem in as much detail as possible, and include any error messages from the console. If you have found a problem with a specific scenario, please open an issue on their respective repositories. Do not report issues with specific scenarios using this scenario manager here!
 
-[edit readme]: https://gitlab.com/CalebBassham/ScenarioManager/edit/readme/README.md?commit_message=Add%20<scenario%20name>%20as%20a%20verified%20scenario
-[service desk]: mailto:incoming+CalebBassham/ScenarioManager@incoming.gitlab.com
-[download latest]: https://gitlab.com/CalebBassham/ScenarioManager/-/jobs/artifacts/master/raw/build/libs/ScenarioManager.jar?job=package
+[edit readme]: https://github.com/ScenarioManager/ScenarioManager/edit/master/README.md
+[download latest]: http://jenkins.calebbassham.me/job/ScenarioManager/job/ScenarioManager/job/master/lastStableBuild/
